@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask AssemblyFile="$(SolutionDir)Lithogen.TaskShim\bin\$(Configuration)\Lithogen.TaskShim.dll" TaskName="LithogenShim">
+  </UsingTask>
+
+  <Target Name="RunLithogen">
+    <LithogenShim SolutionPath="$(SolutionPath)" ProjectPath="$(ProjectPath)" Configuration="$(Configuration)"
+          LithogenCoreFile="$(SolutionDir)Lithogen.Core\bin\$(Configuration)\Lithogen.Core.dll"
+          LithogenPluginDir="$(SolutionDir)Lithogen.Core\bin\$(Configuration)\Plugins" MessageImportance="High"    />
+  </Target>
+
+  <PropertyGroup>
+    <BuildDependsOn>
+      RunLithogen;
+      $(BuildDependsOn);
+    </BuildDependsOn>
+  </PropertyGroup>
+</Project>
