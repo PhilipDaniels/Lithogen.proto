@@ -1,4 +1,5 @@
 ﻿using AppDomainToolkit;
+using Lithogen.Interfaces;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using System;
@@ -76,9 +77,32 @@ namespace Lithogen.Core
                 throw new Exception("FAILED TO TRANSITION TO NEW APP DOMAIN. SOMETHING IS VERY WRONG.");
             }
 
-            ProveRazorMachineWorks(Logger);
+            //ProveRazorMachineWorks(Logger);
 
-            Logger.Msg("completed.");
+            var container = new SimpleInjector.Container();
+            container.Options.AllowOverridingRegistrations = true; 
+            Logger.Msg("IoC container created.");
+
+            container.Register<IBuildContext, BuildContext>();
+            Logger.Msg("Default Lithogen types registered.");
+
+            container.Verify();
+            Logger.Msg("IoC container verified.");
+
+            var bc = container.GetInstance<IBuildContext>();
+            bc.SolutionPath = SolutionPath;
+            bc.ProjectPath = ProjectPath;
+            bc.Configuration = Configuration;
+            bc.MessageImportance = MessageImportance;
+            bc.BuildEngine = BuildEngine;
+            bc.HostObject = HostObject;
+            Logger.Msg("IBuildContext created and configured.");
+
+            var builder = container.GetInstance<IBuilder>();
+            Logger.Msg("IBuilder created.");
+            builder.Build();
+
+            Logger.Msg("Completed.");
             return true;
         }
 
