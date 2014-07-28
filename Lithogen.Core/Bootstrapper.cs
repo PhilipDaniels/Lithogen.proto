@@ -84,6 +84,7 @@ namespace Lithogen.Core
             Logger.Msg("IoC container created.");
 
             container.Register<IBuildContext, BuildContext>();
+            container.Register<IBuilder, Builder>();
             Logger.Msg("Default Lithogen types registered.");
 
             container.Verify();
@@ -96,10 +97,10 @@ namespace Lithogen.Core
             bc.MessageImportance = MessageImportance;
             bc.BuildEngine = BuildEngine;
             bc.HostObject = HostObject;
-            Logger.Msg("IBuildContext created and configured.");
+            Logger.Msg("IBuildContext of type {0} created and configured.", bc.GetType());
 
             var builder = container.GetInstance<IBuilder>();
-            Logger.Msg("IBuilder created.");
+            Logger.Msg("IBuilder of type {0} created.", builder.GetType());
             builder.Build();
 
             Logger.Msg("Completed.");

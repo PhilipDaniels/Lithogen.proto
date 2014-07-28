@@ -9,7 +9,7 @@ namespace Lithogen.Interfaces
     public interface IBuilder
     {
         IBuildContext BuildContext { get; }
-        //IList<IBuildStep> Steps { get; }
+        IList<IBuildStep> Steps { get; }
         bool Build();
     }
 }
