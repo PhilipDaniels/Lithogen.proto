@@ -47,5 +47,34 @@ namespace Lithogen.Interfaces
         /// A dictionary of data that can be used for any purpose. Empty by default.
         /// </summary>
         IDictionary<string, object> TagData { get; }
+
+        /// <summary>
+        /// If not explicitly set the ProjectDirectory is derived from the ProjectPath
+        /// according to Visual Studio defaults (it's just the parent directory).
+        /// It can also be explicitly set, in which case it is returned as-is.
+        /// </summary>
+        string ProjectDirectory { get; set; }
+
+        /// <summary>
+        /// If not explicitly set the ModelsDirectory is derived from the ProjectDirectory
+        /// according to Visual Studio ASP.Net MVC defaults.
+        /// It can also be explicitly set, in which case it is returned as-is.
+        /// </summary>
+        string ModelsDirectory { get; set; }
+
+        /// <summary>
+        /// If not explicitly set the ScriptDirectory is derived from the ProjectDirectory
+        /// according to Visual Studio ASP.Net MVC defaults.
+        /// It can also be explicitly set, in which case it is returned as-is.
+        /// </summary>
+        string ScriptsDirectory { get; set; }
+
+        /// <summary>
+        /// If not explicitly set the ViewsDirectory is derived from the ProjectDirectory
+        /// according to Visual Studio ASP.Net MVC defaults.
+        /// It can also be explicitly set, in which case it is returned as-is.
+        /// </summary>
+        string ViewsDirectory { get; set; }
+
     }
 }
