@@ -1,4 +1,5 @@
 ﻿using Lithogen.Core.FileSystem;
+using Lithogen.Core.Tests.Support.FileSystem;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -10,11 +11,8 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
     /// You will need a C:\temp folder to run these tests.
     /// These are really integration tests so they are marked as explicit.
     /// </summary>
-    class WindowsFileSystemTests
+    class WindowsFileSystemTests : FileSystemTestsBase
     {
-        const string T_ParentDir = @"C:\temp\wfstestdir";
-        const string T_Dir1      = @"C:\temp\wfstestdir\dir1";
-
         [SetUp]
         void Setup()
         {
@@ -72,7 +70,7 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
             public void WhenDirectoryDoesNotExist_ReturnsFalse()
             {
                 var wfs = new WindowsFileSystem();
-                Assert.IsFalse(wfs.DirectoryExists(@"C:\somewhere\over\the\rainbow"));
+                Assert.IsFalse(wfs.DirectoryExists(T_DirectoryThatDoesNotExist));
             }
         }
 
@@ -146,6 +144,33 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
                 wfs.CreateParentDirectory(T_Dir1);
                 string parent = Path.GetDirectoryName(T_Dir1);
                 Assert.IsTrue(Directory.Exists(parent));
+            }
+        }
+
+        class WriteAllBytes
+        {
+            [Test]
+            [ExpectedException(typeof(ArgumentNullException))]
+            public void WhenFilenameIsNull_ThrowsArgumentNullException()
+            {
+                var wfs = new WindowsFileSystem();
+                wfs.WriteAllBytes(null, T_Bytes);
+            }
+
+            [Test]
+            [ExpectedException(typeof(ArgumentNullException))]
+            public void WhenBytesIsNull_ThrowsArgumentNullException()
+            {
+                var wfs = new WindowsFileSystem();
+                wfs.WriteAllBytes(T_File1, null);
+            }
+
+            [Test]
+            public void WhenBytesIsEmpty_WritesZeroByteFile()
+            {
+                var wfs = new WindowsFileSystem();
+                wfs.WriteAllBytes(T_File1, new byte[] {});
+                Assert.True((new FileInfo(T_File1)).Length == 0);
             }
         }
     }

@@ -1,19 +1,13 @@
 ﻿using Lithogen.Core.FileSystem;
+using Lithogen.Core.Tests.Support.FileSystem;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lithogen.Core.Tests.Unit.FileSystem
 {
-    class MemoryFileSystemTests
+    class MemoryFileSystemTests : FileSystemTestsBase
     {
-        const string T_ParentDir = @"C:\temp\mfstestdir";
-        const string T_Dir1      = @"C:\temp\mfstestdir\dir1";
-
         class DirectoryExists
         {
             [Test]
@@ -52,7 +46,7 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             public void WhenDirectoryDoesNotExist_ReturnsFalse()
             {
                 var mfs = new MemoryFileSystem();
-                Assert.IsFalse(mfs.DirectoryExists(@"C:\somewhere\over\the\rainbow"));
+                Assert.IsFalse(mfs.DirectoryExists(T_DirectoryThatDoesNotExist));
             }
         }
 
@@ -126,6 +120,17 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
                 mfs.CreateParentDirectory(T_Dir1);
                 string parent = Path.GetDirectoryName(T_Dir1);
                 Assert.IsTrue(mfs.DirectoryExists(parent));
+            }
+        }
+
+        class WriteAllBytes
+        {
+            [Test]
+            [ExpectedException(typeof(ArgumentNullException))]
+            public void WhenFilenameIsNull_ThrowsArgumentNullException()
+            {
+                var mfs = new MemoryFileSystem();
+                mfs.WriteAllBytes(null, T_Bytes);
             }
         }
     }

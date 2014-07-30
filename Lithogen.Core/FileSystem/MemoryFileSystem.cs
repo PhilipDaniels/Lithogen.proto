@@ -41,7 +41,8 @@ namespace Lithogen.Core.FileSystem
 
         public void WriteAllBytes(string filename, byte[] bytes)
         {
-            throw new NotImplementedException();
+            filename.ThrowIfNullOrWhiteSpace("filename");
+            File.WriteAllBytes(filename, bytes);
         }
     }
 }
