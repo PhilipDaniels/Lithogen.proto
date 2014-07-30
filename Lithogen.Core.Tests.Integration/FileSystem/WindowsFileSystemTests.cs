@@ -1,11 +1,7 @@
 ﻿using Lithogen.Core.FileSystem;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lithogen.Core.Tests.Integration.FileSystem
 {
@@ -14,14 +10,13 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
     /// You will need a C:\temp folder to run these tests.
     /// These are really integration tests so they are marked as explicit.
     /// </summary>
-    [Explicit]
-    public class WindowsFileSystemTests
+    class WindowsFileSystemTests
     {
         const string T_ParentDir = @"C:\temp\wfstestdir";
         const string T_Dir1      = @"C:\temp\wfstestdir\dir1";
 
         [SetUp]
-        public void Setup()
+        void Setup()
         {
             if (Directory.Exists(T_ParentDir))
             {
@@ -30,7 +25,7 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
         }
 
         [TestFixtureTearDown]
-        public void TestFixtureTearDown()
+        void TestFixtureTearDown()
         {
             if (Directory.Exists(T_ParentDir))
             {
@@ -38,20 +33,20 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
             }
         }
 
-        [Explicit]
-        public class DirectoryExists
+        class DirectoryExists
         {
             [Test]
-            //[ExpectedException(typeof(ArgumentNullException))]
-            public void ForNullDirectory_ThrowsArgumentNullException()
+            [ExpectedException(typeof(ArgumentNullException))]
+            public void WhenDirectoryNameIsNull_ThrowsArgumentNullException()
             {
                 var wfs = new WindowsFileSystem();
-                Assert.That(() => wfs.DirectoryExists(null), Throws.Exception.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("directory"));
+                //Assert.That(() => wfs.DirectoryExists(null), Throws.Exception.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("directory"));
+                wfs.DirectoryExists(null);
             }
 
             [Test]
             [ExpectedException(typeof(ArgumentOutOfRangeException))]
-            public void ForEmptyDirectory_ThrowsArgumentOutOfRangeException()
+            public void WhenDirectoryNameIsEmpty_ThrowsArgumentOutOfRangeException()
             {
                 var wfs = new WindowsFileSystem();
                 wfs.DirectoryExists("");
@@ -59,14 +54,14 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
 
             [Test]
             [ExpectedException(typeof(ArgumentOutOfRangeException))]
-            public void ForWhitespaceDirectory_ThrowsArgumentOutOfRangeException()
+            public void WhenDirectoryNameIsWhitespace_ThrowsArgumentOutOfRangeException()
             {
                 var wfs = new WindowsFileSystem();
                 wfs.DirectoryExists(" ");
             }
 
             [Test]
-            public void ForExistingDirectory_ReturnsTrue()
+            public void WhenDirectoryAlreadyExists_ReturnsTrue()
             {
                 var wfs = new WindowsFileSystem();
                 Directory.CreateDirectory(T_ParentDir);
@@ -74,19 +69,18 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
             }
 
             [Test]
-            public void ForNonExistingDirectory_ReturnsFalse()
+            public void WhenDirectoryDoesNotExist_ReturnsFalse()
             {
                 var wfs = new WindowsFileSystem();
                 Assert.IsFalse(wfs.DirectoryExists(@"C:\somewhere\over\the\rainbow"));
             }
         }
 
-        [Explicit]
-        public class CreateDirectory
+        class CreateDirectory
         {
             [Test]
             [ExpectedException(typeof(ArgumentNullException))]
-            public void ForNullDirectory_ThrowsArgumentNullException()
+            public void WhenDirectoryNameIsNull_ThrowsArgumentNullException()
             {
                 var wfs = new WindowsFileSystem();
                 wfs.CreateDirectory(null);
@@ -94,7 +88,7 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
 
             [Test]
             [ExpectedException(typeof(ArgumentOutOfRangeException))]
-            public void ForEmptyDirectory_ThrowsArgumentOutOfRangeException()
+            public void WhenDirectoryNameIsEmpty_ThrowsArgumentOutOfRangeException()
             {
                 var wfs = new WindowsFileSystem();
                 wfs.CreateDirectory("");
@@ -102,7 +96,7 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
 
             [Test]
             [ExpectedException(typeof(ArgumentOutOfRangeException))]
-            public void ForWhitespaceDirectory_ThrowsArgumentOutOfRangeException()
+            public void WhenDirectoryNameIsWhitespace_ThrowsArgumentOutOfRangeException()
             {
                 var wfs = new WindowsFileSystem();
                 wfs.CreateDirectory(" ");
@@ -119,12 +113,11 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
             }
         }
 
-        [Explicit]
-        public class CreateParentDirectory
+        class CreateParentDirectory
         {
             [Test]
             [ExpectedException(typeof(ArgumentNullException))]
-            public void ForNullDirectory_ThrowsArgumentNullException()
+            public void WhenDirectoryNameIsNull_ThrowsArgumentNullException()
             {
                 var wfs = new WindowsFileSystem();
                 wfs.CreateParentDirectory(null);
@@ -132,7 +125,7 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
 
             [Test]
             [ExpectedException(typeof(ArgumentOutOfRangeException))]
-            public void ForEmptyDirectory_ThrowsArgumentOutOfRangeException()
+            public void WhenDirectoryNameIsEmpty_ThrowsArgumentOutOfRangeException()
             {
                 var wfs = new WindowsFileSystem();
                 wfs.CreateParentDirectory("");
@@ -140,7 +133,7 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
 
             [Test]
             [ExpectedException(typeof(ArgumentOutOfRangeException))]
-            public void ForWhitespaceDirectory_ThrowsArgumentOutOfRangeException()
+            public void WhenDirectoryNameIsWhitespace_ThrowsArgumentOutOfRangeException()
             {
                 var wfs = new WindowsFileSystem();
                 wfs.CreateDirectory(" ");
@@ -153,15 +146,6 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
                 wfs.CreateParentDirectory(T_Dir1);
                 string parent = Path.GetDirectoryName(T_Dir1);
                 Assert.IsTrue(Directory.Exists(parent));
-            }
-        }
-
-        [Explicit]
-        public class WriteAllBytes
-        {
-            [Test]
-            public void TestSomething()
-            {
             }
         }
     }

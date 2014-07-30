@@ -2,14 +2,9 @@
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lithogen.Core.Tests
 {
-    [TestFixture]
     public class BuilderTests
     {
         [Test]
@@ -20,7 +15,7 @@ namespace Lithogen.Core.Tests
         }
 
         [Test]
-        public void Ctor_Executed_CreatesEmptyStepsCollection()
+        public void Ctor_WhenCompleted_CreatesEmptyStepsCollection()
         {
             var bc = new Mock<IBuildContext>();
             var b = new Builder(bc.Object);
