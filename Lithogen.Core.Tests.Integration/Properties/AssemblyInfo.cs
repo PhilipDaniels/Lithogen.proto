@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Lithogen.Core.Tests")]
+[assembly: AssemblyTitle("Lithogen.Core.Tests.Integration")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Lithogen.Core.Tests")]
+[assembly: AssemblyProduct("Lithogen.Core.Tests.Integration")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("9778e512-6167-451f-aa65-c65107267eb9")]
+[assembly: Guid("5170ea84-6fe3-4494-80a4-47edb582f6a4")]
 
 // Version information for an assembly consists of the following four values:
 //
