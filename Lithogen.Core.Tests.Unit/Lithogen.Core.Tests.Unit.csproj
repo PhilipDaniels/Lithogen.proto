@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="BuildContextTests.cs" />
     <Compile Include="BuilderTests.cs" />
+    <Compile Include="FileSystem\MemoryFileSystemTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

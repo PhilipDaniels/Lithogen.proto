@@ -3,7 +3,7 @@ using Moq;
 using NUnit.Framework;
 using System;
 
-namespace Lithogen.Core.Tests
+namespace Lithogen.Core.Tests.Unit
 {
     public class BuilderTests
     {

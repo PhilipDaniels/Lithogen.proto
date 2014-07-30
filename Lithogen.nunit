@@ -1,8 +1,9 @@
 ﻿<NUnitProject>
   <Settings activeconfig="Debug" />
   <Config name="Debug" binpathtype="Auto">
-    <assembly path="Lithogen.Core.Tests.Integration\bin\Debug\Lithogen.Core.Tests.Integration.dll" />
     <assembly path="Lithogen.Core.Tests.Unit\bin\Debug\Lithogen.Core.Tests.Unit.dll" />
   </Config>
-  <Config name="Release" binpathtype="Auto" />
+  <Config name="Release" binpathtype="Auto">
+    <assembly path="Lithogen.Core.Tests.Unit\bin\Release\Lithogen.Core.Tests.Unit.dll" />
+  </Config>
 </NUnitProject>

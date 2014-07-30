@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
   <TopNode>[0-1000]C:\Users\Phil\repos\Lithogen\Lithogen.nunit</TopNode>
-  <SelectedNode>[0-1051]Lithogen.Core.Tests.FileSystem</SelectedNode>
+  <SelectedNode>[0-1034]Lithogen.Core.Tests.Unit.FileSystem.MemoryFileSystemTests+DirectoryExists.WhenDirectoryNameIsNull_ThrowsArgumentNullException</SelectedNode>
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
     <Node UniqueName="[0-1000]C:\Users\Phil\repos\Lithogen\Lithogen.nunit" Expanded="true" />
-    <Node UniqueName="[0-1047]C:\Users\Phil\repos\Lithogen\Lithogen.Core.Tests\bin\Debug\Lithogen.Core.Tests.dll" Expanded="true" />
-    <Node UniqueName="[0-1048]Lithogen" Expanded="true" />
-    <Node UniqueName="[0-1049]Lithogen.Core" Expanded="true" />
-    <Node UniqueName="[0-1050]Lithogen.Core.Tests" Expanded="true" />
-    <Node UniqueName="[0-1001]Lithogen.Core.Tests.BuildContextTests" Expanded="true" />
-    <Node UniqueName="[0-1026]Lithogen.Core.Tests.BuilderTests" Expanded="true" />
-    <Node UniqueName="[0-1051]Lithogen.Core.Tests.FileSystem" Expanded="true" />
-    <Node UniqueName="[0-1035]Lithogen.Core.Tests.FileSystem.WindowsFileSystemTests+CreateDirectory" Expanded="true" />
-    <Node UniqueName="[0-1040]Lithogen.Core.Tests.FileSystem.WindowsFileSystemTests+CreateParentDirectory" Expanded="true" />
-    <Node UniqueName="[0-1029]Lithogen.Core.Tests.FileSystem.WindowsFileSystemTests+DirectoryExists" Expanded="true" />
-    <Node UniqueName="[0-1045]Lithogen.Core.Tests.FileSystem.WindowsFileSystemTests+WriteAllBytes" Expanded="true" />
+    <Node UniqueName="[0-1035]C:\Users\Phil\repos\Lithogen\Lithogen.Core.Tests.Unit\bin\Debug\Lithogen.Core.Tests.Unit.dll" Expanded="true" />
+    <Node UniqueName="[0-1036]Lithogen" Expanded="true" />
+    <Node UniqueName="[0-1037]Lithogen.Core" Expanded="true" />
+    <Node UniqueName="[0-1038]Lithogen.Core.Tests" Expanded="true" />
+    <Node UniqueName="[0-1039]Lithogen.Core.Tests.Unit" Expanded="true" />
+    <Node UniqueName="[0-1001]Lithogen.Core.Tests.Unit.BuildContextTests+Ctor" Expanded="true" />
+    <Node UniqueName="[0-1009]Lithogen.Core.Tests.Unit.BuildContextTests+ModelsDirectory" Expanded="true" />
+    <Node UniqueName="[0-1003]Lithogen.Core.Tests.Unit.BuildContextTests+ProjectDirectory" Expanded="true" />
+    <Node UniqueName="[0-1016]Lithogen.Core.Tests.Unit.BuildContextTests+ScriptsDirectory" Expanded="true" />
+    <Node UniqueName="[0-1023]Lithogen.Core.Tests.Unit.BuildContextTests+ViewsDirectory" Expanded="true" />
+    <Node UniqueName="[0-1030]Lithogen.Core.Tests.Unit.BuilderTests" Expanded="true" />
+    <Node UniqueName="[0-1040]Lithogen.Core.Tests.Unit.FileSystem" Expanded="true" />
+    <Node UniqueName="[0-1033]Lithogen.Core.Tests.Unit.FileSystem.MemoryFileSystemTests+DirectoryExists" Expanded="true" />
   </Nodes>
 </VisualState>
