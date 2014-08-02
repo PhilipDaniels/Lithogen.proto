@@ -48,13 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildContextTests.cs" />
     <Compile Include="BuilderTests.cs" />
-    <Compile Include="FileSystem\IFileSystemTests\IFileSystemBase.cs" />
-    <Compile Include="FileSystem\IFileSystemTests\WriteAllBytes.cs" />
-    <Compile Include="FileSystem\IFileSystemTests\CreateParentDirectory.cs" />
-    <Compile Include="FileSystem\IFileSystemTests\CreateDirectory.cs" />
-    <Compile Include="FileSystem\IFileSystemTests\DirectoryExists.cs" />
+    <Compile Include="BuildContextBase.cs" />
+    <Compile Include="BuildContext_ProjectDirectory.cs" />
+    <Compile Include="BuildContext_Ctor.cs" />
+    <Compile Include="BuildContext_ModelsDirectory.cs" />
+    <Compile Include="BuildContext_ViewsDirectory.cs" />
+    <Compile Include="BuildContext_ScriptsDirectory.cs" />
+    <Compile Include="FileSystem\IFileSystemBase.cs" />
+    <Compile Include="FileSystem\IFileSystem_WriteAllBytes.cs" />
+    <Compile Include="FileSystem\IFileSystem_CreateParentDirectory.cs" />
+    <Compile Include="FileSystem\IFileSystem_CreateDirectory.cs" />
+    <Compile Include="FileSystem\IFileSystem_DirectoryExists.cs" />
     <Compile Include="FileSystem\MemoryFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

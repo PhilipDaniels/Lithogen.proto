@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using System.IO;
 
-namespace Lithogen.Core.Tests.Unit.FileSystem.IFileSystemTests
+namespace Lithogen.Core.Tests.Unit.FileSystem
 {
     public abstract class IFileSystemBase<T> where T : IFileSystem, new()
     {

@@ -1,13 +1,11 @@
 ﻿using Lithogen.Core.FileSystem;
 using Lithogen.Core.Tests.Unit.FileSystem;
 using NUnit.Framework;
-using System;
 using System.IO;
 
 namespace Lithogen.Core.Tests.Integration.FileSystem
 {
-    /*
-    public class WindowsFileSystem_CreateDirectory : IFileSystem_CreateDirectory_Base<WindowsFileSystem>
+    public class WindowsFileSystem_CreateDirectory : IFileSystem_CreateDirectory<WindowsFileSystem>
     {
         [Test]
         public override void WhenDirectoryAlreadyExists_Succeeds()
@@ -25,7 +23,7 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
         }
     }
 
-    public class WindowsFileSystem_CreateParentDirectory : IFileSystem_CreateParentDirectory_Base<WindowsFileSystem>
+    public class WindowsFileSystem_CreateParentDirectory : IFileSystem_CreateParentDirectory<WindowsFileSystem>
     {
         [TestFixtureTearDown]
         public void TestFixtureTearDown()
@@ -34,7 +32,7 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
         }
     }
 
-    public class WindowsFileSystem_DirectoryExists : IFileSystem_DirectoryExists_Base<WindowsFileSystem>
+    public class WindowsFileSystem_DirectoryExists : IFileSystem_DirectoryExists<WindowsFileSystem>
     {
         [TestFixtureTearDown]
         public void TestFixtureTearDown()
@@ -42,5 +40,4 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
             DeletePhysicalTestDirectories();
         }
     }
-     */ 
 }
