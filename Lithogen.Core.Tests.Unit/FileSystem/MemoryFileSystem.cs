@@ -13,4 +13,8 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
     public class MemoryFileSystem_DirectoryExists : IFileSystem_DirectoryExists<MemoryFileSystem>
     {
     }
+
+    public class MemoryFileSystem_WriteAllBytes : IFileSystem_WriteAllBytes<MemoryFileSystem>
+    {
+    }
 }

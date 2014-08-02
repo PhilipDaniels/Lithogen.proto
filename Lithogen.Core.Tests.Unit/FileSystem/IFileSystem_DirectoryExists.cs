@@ -7,17 +7,12 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
     public abstract class IFileSystem_DirectoryExists<T> : IFileSystemBase<T>
         where T : IFileSystem, new()
     {
-        [Test]
-        public virtual void WhenDirectoryNameIsNull_ThrowsArgumentNullException()
+        [TestCase(null, ExpectedException = typeof(ArgumentNullException))]
+        [TestCase("", ExpectedException = typeof(ArgumentOutOfRangeException))]
+        [TestCase(" ", ExpectedException = typeof(ArgumentOutOfRangeException))]
+        public virtual void WhenDirectoryNameIsInvalid_Throws(string directory)
         {
-            Assert.Throws<ArgumentNullException>(() => TheFS.DirectoryExists(null));
-        }
-
-        [TestCase("")]
-        [TestCase(" ")]
-        public virtual void WhenDirectoryNameIsEmpty_ThrowsArgumentOutOfRangeException(string directory)
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => TheFS.DirectoryExists(directory));
+            TheFS.CreateDirectory(directory);
         }
 
         [TestCase(T_ParentDir)]
