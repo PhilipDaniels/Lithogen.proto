@@ -1,10 +1,5 @@
 ﻿using Lithogen.Interfaces.FileSystem;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lithogen.Core.FileSystem
 {
@@ -39,8 +34,5 @@ namespace Lithogen.Core.FileSystem
             CreateParentDirectory(filename);
             File.WriteAllBytes(filename, bytes);
         }
-
-        // byte[] ReadAllBytes(string filename);
-
     }
 }

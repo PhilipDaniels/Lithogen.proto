@@ -6,55 +6,47 @@ namespace Lithogen.Core.Tests.Unit
     public class BuildContext_ModelsDirectory : BuildContextBase
     {
         [Test]
-        [ExpectedException(typeof(NullReferenceException))]
         public void WhenProjectPathIsNull_ThrowsNullReferenceException()
         {
-            var bc = new BuildContext();
-            bc.ProjectPath = null;
-            string modelsDirectory = bc.ModelsDirectory;
+            TheContext.ProjectPath = null;
+            Assert.That(() => TheContext.ModelsDirectory, Throws.TypeOf<NullReferenceException>());
         }
 
         [Test]
         public void WhenProjectPathIsSetAndModelsDirectoryIsNull_MatchesVisualStudioDefaultsAndIsLowerCase()
         {
-            var bc = new BuildContext();
-            bc.ProjectPath = T_ProjectPath;
-            Assert.AreEqual(T_ModelsDirectory, bc.ModelsDirectory);
+            TheContext.ProjectPath = T_ProjectPath;
+            Assert.AreEqual(T_ModelsDirectory, TheContext.ModelsDirectory);
         }
 
         [Test]
         public void WhenExplicitlySet_IsReturnedUnchanged()
         {
-            var bc = new BuildContext();
-            bc.ModelsDirectory = T_ModelsDirectory;
-            Assert.AreEqual(T_ModelsDirectory, bc.ModelsDirectory);
+            TheContext.ModelsDirectory = T_ModelsDirectory;
+            Assert.AreEqual(T_ModelsDirectory, TheContext.ModelsDirectory);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void WhenSettingToWhitespace_ThrowsArgumentNullException()
         {
-            var bc = new BuildContext();
-            bc.ModelsDirectory = @"";
+            Assert.That(() => TheContext.ModelsDirectory = @"", Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
         public void WhenReSettingToNull_RevertsToDefaultBehaviour()
         {
-            var bc = new BuildContext();
-            bc.ProjectPath = T_ProjectPath;
-            bc.ModelsDirectory = @"anywhere";
-            bc.ModelsDirectory = null;
-            Assert.AreEqual(T_ModelsDirectory, bc.ModelsDirectory);
+            TheContext.ProjectPath = T_ProjectPath;
+            TheContext.ModelsDirectory = @"anywhere";
+            TheContext.ModelsDirectory = null;
+            Assert.AreEqual(T_ModelsDirectory, TheContext.ModelsDirectory);
         }
 
         [Test]
         public void WhenProjectDirectoryIsExplicitlySet_DerivesFromProjectDirectoryNotProjectPath()
         {
-            var bc = new BuildContext();
-            bc.ProjectPath = T_ProjectDirectory;
-            bc.ProjectDirectory = @"C:\somewhere\else\";
-            Assert.AreEqual(@"C:\somewhere\else\models", bc.ModelsDirectory);
+            TheContext.ProjectPath = T_ProjectDirectory;
+            TheContext.ProjectDirectory = @"C:\somewhere\else\";
+            Assert.AreEqual(@"C:\somewhere\else\models", TheContext.ModelsDirectory);
         }
     }
 }

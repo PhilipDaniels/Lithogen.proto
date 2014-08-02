@@ -2,14 +2,13 @@
 
 namespace Lithogen.Core.Tests.Unit
 {
-    public class BuildContext_Ctor
+    public class BuildContext_Ctor : BuildContextBase
     {
         [Test]
         public void WhenCompleted_CreatesEmptyTagDataDictionary()
         {
-            var bc = new BuildContext();
-            Assert.NotNull(bc.TagData);
-            Assert.IsEmpty(bc.TagData);
+            Assert.NotNull(TheContext.TagData);
+            Assert.IsEmpty(TheContext.TagData);
         }
     }
 }

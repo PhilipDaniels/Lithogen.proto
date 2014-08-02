@@ -9,52 +9,46 @@ namespace Lithogen.Core.Tests.Unit
         [ExpectedException(typeof(NullReferenceException))]
         public void WhenProjectPathIsNull_ThrowsNullReferenceException()
         {
-            var bc = new BuildContext();
-            bc.ProjectPath = null;
-            string viewsDirectory = bc.ViewsDirectory;
+            TheContext.ProjectPath = null;
+            string viewsDirectory = TheContext.ViewsDirectory;
         }
 
         [Test]
         public void WhenProjectPathIsSetAndViewsDirectoryIsNull_MatchesVisualStudioDefaultsAndIsLowerCase()
         {
-            var bc = new BuildContext();
-            bc.ProjectPath = T_ProjectPath;
-            Assert.AreEqual(T_ViewsDirectory, bc.ViewsDirectory);
+            TheContext.ProjectPath = T_ProjectPath;
+            Assert.AreEqual(T_ViewsDirectory, TheContext.ViewsDirectory);
         }
 
         [Test]
         public void WhenExplicitlySet_IsReturnedUnchanged()
         {
-            var bc = new BuildContext();
-            bc.ViewsDirectory = T_ViewsDirectory;
-            Assert.AreEqual(T_ViewsDirectory, bc.ViewsDirectory);
+            TheContext.ViewsDirectory = T_ViewsDirectory;
+            Assert.AreEqual(T_ViewsDirectory, TheContext.ViewsDirectory);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void WhenSettingToWhitespace_ThrowsArgumentNullException()
         {
-            var bc = new BuildContext();
-            bc.ViewsDirectory = @"";
+            TheContext.ViewsDirectory = @"";
         }
 
         [Test]
         public void WhenReSettingToNull_RevertsToDefaultBehaviour()
         {
-            var bc = new BuildContext();
-            bc.ProjectPath = T_ProjectPath;
-            bc.ViewsDirectory = @"anywhere";
-            bc.ViewsDirectory = null;
-            Assert.AreEqual(T_ViewsDirectory, bc.ViewsDirectory);
+            TheContext.ProjectPath = T_ProjectPath;
+            TheContext.ViewsDirectory = @"anywhere";
+            TheContext.ViewsDirectory = null;
+            Assert.AreEqual(T_ViewsDirectory, TheContext.ViewsDirectory);
         }
 
         [Test]
         public void WhenProjectDirectoryIsExplicitlySet_DerivesFromProjectDirectoryNotProjectPath()
         {
-            var bc = new BuildContext();
-            bc.ProjectPath = T_ProjectDirectory;
-            bc.ProjectDirectory = @"C:\somewhere\else\";
-            Assert.AreEqual(@"C:\somewhere\else\views", bc.ViewsDirectory);
+            TheContext.ProjectPath = T_ProjectDirectory;
+            TheContext.ProjectDirectory = @"C:\somewhere\else\";
+            Assert.AreEqual(@"C:\somewhere\else\views", TheContext.ViewsDirectory);
         }
     }
 }

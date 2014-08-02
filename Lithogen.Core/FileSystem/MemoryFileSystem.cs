@@ -1,5 +1,4 @@
 ﻿using Lithogen.Interfaces.FileSystem;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,7 +41,6 @@ namespace Lithogen.Core.FileSystem
         public void WriteAllBytes(string filename, byte[] bytes)
         {
             filename.ThrowIfNullOrWhiteSpace("filename");
-            File.WriteAllBytes(filename, bytes);
         }
     }
 }

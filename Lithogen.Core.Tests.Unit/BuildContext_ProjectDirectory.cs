@@ -9,43 +9,38 @@ namespace Lithogen.Core.Tests.Unit
         [ExpectedException(typeof(NullReferenceException))]
         public void WhenProjectPathIsNull_ThrowsNullReferenceException()
         {
-            var bc = new BuildContext();
-            bc.ProjectPath = null;
-            string projectDirectory = bc.ProjectDirectory;
+            TheContext.ProjectPath = null;
+            string projectDirectory = TheContext.ProjectDirectory;
         }
 
         [Test]
         public void WhenProjectPathIsValidAndNotExplicitlySet_IsTheParentDirectory()
         {
-            var bc = new BuildContext();
-            bc.ProjectPath = T_ProjectPath;
-            Assert.AreEqual(T_ProjectDirectory, bc.ProjectDirectory);
+            TheContext.ProjectPath = T_ProjectPath;
+            Assert.AreEqual(T_ProjectDirectory, TheContext.ProjectDirectory);
         }
 
         [Test]
         public void WhenExplicitlySet_IsReturnedUnchanged()
         {
-            var bc = new BuildContext();
-            bc.ProjectDirectory = T_ProjectDirectory;
-            Assert.AreEqual(T_ProjectDirectory, bc.ProjectDirectory);
+            TheContext.ProjectDirectory = T_ProjectDirectory;
+            Assert.AreEqual(T_ProjectDirectory, TheContext.ProjectDirectory);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void WhenSettingToWhitespace_ThrowsArgumentNullException()
         {
-            var bc = new BuildContext();
-            bc.ProjectDirectory = @"";
+            TheContext.ProjectDirectory = @"";
         }
 
         [Test]
         public void WhenReSettingToNull_ResetsToDerivedBehaviour()
         {
-            var bc = new BuildContext();
-            bc.ProjectPath = T_ProjectPath;
-            bc.ProjectDirectory = @"anywhere";
-            bc.ProjectDirectory = null;
-            Assert.AreEqual(T_ProjectDirectory, bc.ProjectDirectory);
+            TheContext.ProjectPath = T_ProjectPath;
+            TheContext.ProjectDirectory = @"anywhere";
+            TheContext.ProjectDirectory = null;
+            Assert.AreEqual(T_ProjectDirectory, TheContext.ProjectDirectory);
         }
     }
 }
