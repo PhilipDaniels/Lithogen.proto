@@ -20,13 +20,13 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             Assert.Throws<ArgumentOutOfRangeException>(() => TheFS.CreateDirectory(directory));
         }
 
-        [Test]
-        public virtual void WhenDirectoryAlreadyExists_Succeeds()
+        [TestCase(T_Dir1)]
+        public virtual void WhenDirectoryAlreadyExists_DoesNotThrow(string directory)
         {
-            TheFS.CreateDirectory(T_Dir1);
-            Assert.True(TheFS.DirectoryExists(T_Dir1));
-            TheFS.CreateDirectory(T_Dir1);
-            Assert.True(TheFS.DirectoryExists(T_Dir1));
+            TheFS.CreateDirectory(directory);
+            Assert.True(TheFS.DirectoryExists(directory));
+            TheFS.CreateDirectory(directory);
+            Assert.True(TheFS.DirectoryExists(directory));
         }
     }
 }

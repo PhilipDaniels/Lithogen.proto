@@ -6,10 +6,10 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
 {
     public abstract class IFileSystemBase<T> where T : IFileSystem, new()
     {
-        public static readonly string T_ParentDir = @"C:\temp\Lithogen_testdir";
-        public static readonly string T_Dir1 = @"C:\temp\Lithogen_testdir\dir1";
-        public static readonly string T_File1 = @"C:\temp\Lithogen_testdir\file1.data";
-        public static readonly string T_DirectoryThatDoesNotExist = @"C:\somewhere\over\the\rainbow";
+        public const string T_ParentDir = @"C:\temp\Lithogen_testdir";
+        public const string T_Dir1 = @"C:\temp\Lithogen_testdir\dir1";
+        public const string T_File1 = @"C:\temp\Lithogen_testdir\file1.data";
+        public const string T_DirectoryThatDoesNotExist = @"C:\somewhere\over\the\rainbow";
 
         public static readonly byte[] T_Bytes = new byte[] { 1, 2, 3 };
 

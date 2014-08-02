@@ -16,18 +16,24 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
 
         [TestCase("")]
         [TestCase(" ")]
-        public virtual void WhenDirectoryNameIsEmpty_ThrowsArgumentOutOfRangeException(string directory)
+        public virtual void WhenDirectoryNameIsEmptyOrWhitespace_ThrowsArgumentOutOfRangeException(string directory)
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => TheFS.CreateParentDirectory(directory));
         }
 
-        [Test]
-        public virtual void WhenDirectoryAlreadyExists_Succeeds()
+        [TestCase(T_Dir1)]
+        public virtual void WhenDirectoryIsValid_CreatesParentButNotTheDirectory(string directory)
         {
-            TheFS.CreateParentDirectory(T_Dir1);
-            string parent = Path.GetDirectoryName(T_Dir1);
-            Assert.True(TheFS.DirectoryExists(parent));
-            TheFS.CreateParentDirectory(T_Dir1);
+            TheFS.CreateParentDirectory(directory);
+            Assert.False(TheFS.DirectoryExists(directory));
+            Assert.True(TheFS.DirectoryExists(Path.GetDirectoryName(directory)));
+        }
+
+        [TestCase(T_Dir1)]
+        public virtual void WhenDirectoryAlreadyExists_DoesNotThrow(string directory)
+        {
+            TheFS.CreateParentDirectory(directory);
+            TheFS.CreateParentDirectory(directory);
         }
     }
 }
