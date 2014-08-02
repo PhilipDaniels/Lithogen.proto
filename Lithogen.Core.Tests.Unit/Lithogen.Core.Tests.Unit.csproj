@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{61198834-E3B8-47B4-9E65-4FECFADA4826}</ProjectGuid>
+    <ProjectGuid>{40ED0135-256F-4BF6-9E4A-19A71F493B6F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Lithogen.Core.Tests</RootNamespace>
-    <AssemblyName>Lithogen.Core.Tests</AssemblyName>
+    <RootNamespace>Lithogen.Core.Tests.Unit</RootNamespace>
+    <AssemblyName>Lithogen.Core.Tests.Unit</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -48,12 +48,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Integration\FileSystem\WindowsFileSystemTests.cs" />
+    <Compile Include="BuildContextTests.cs" />
+    <Compile Include="BuilderTests.cs" />
+    <Compile Include="FileSystem\IFileSystem_WriteAllBytes_Base.cs" />
+    <Compile Include="FileSystem\IFileSystem_CreateParentDirectory_Base.cs" />
+    <Compile Include="FileSystem\IFileSystem_Base.cs" />
+    <Compile Include="FileSystem\IFileSystem_CreateDirectory_Base.cs" />
+    <Compile Include="FileSystem\IFileSystem_DirectoryExists_Base.cs" />
+    <Compile Include="FileSystem\MemoryFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Support\FileSystem\FileSystemTestsBase.cs" />
-    <Compile Include="Unit\BuildContextTests.cs" />
-    <Compile Include="Unit\BuilderTests.cs" />
-    <Compile Include="Unit\FileSystem\MemoryFileSystemTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -68,7 +71,6 @@
       <Name>Lithogen.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
