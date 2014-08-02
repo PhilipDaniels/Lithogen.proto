@@ -1,16 +1,17 @@
 ﻿using Lithogen.Core.FileSystem;
+using Lithogen.Core.Tests.Unit.FileSystem.IFileSystemTests;
 
 namespace Lithogen.Core.Tests.Unit.FileSystem
 {
-    public class MemoryFileSystem_CreateDirectory : IFileSystem_CreateDirectory_Base<MemoryFileSystem>
+    public class MemoryFileSystem_CreateDirectory : CreateDirectory<MemoryFileSystem>
     {
     }
 
-    public class MemoryFileSystem_CreateParentDirectory : IFileSystem_CreateParentDirectory_Base<MemoryFileSystem>
+    public class MemoryFileSystem_CreateParentDirectory : CreateParentDirectory<MemoryFileSystem>
     {
     }
 
-    public class MemoryFileSystem_DirectoryExists : IFileSystem_DirectoryExists_Base<MemoryFileSystem>
+    public class MemoryFileSystem_DirectoryExists : DirectoryExists<MemoryFileSystem>
     {
     }
 }

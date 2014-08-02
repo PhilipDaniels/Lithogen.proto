@@ -2,23 +2,9 @@
 using NUnit.Framework;
 using System.IO;
 
-namespace Lithogen.Core.Tests.Unit.FileSystem
+namespace Lithogen.Core.Tests.Unit.FileSystem.IFileSystemTests
 {
-    public class Outer
-    {
-        public class Inner
-        {
-        }
-    }
-
-    public class OuterSub : Outer
-    {
-        public class InnerSub : Outer.Inner
-        {
-        }
-    }
-
-    public abstract class IFileSystem_Base<T> where T : IFileSystem, new()
+    public abstract class IFileSystemBase<T> where T : IFileSystem, new()
     {
         public static readonly string T_ParentDir = @"C:\temp\Lithogen_testdir";
         public static readonly string T_Dir1 = @"C:\temp\Lithogen_testdir\dir1";

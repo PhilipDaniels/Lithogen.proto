@@ -2,9 +2,9 @@
 using NUnit.Framework;
 using System;
 
-namespace Lithogen.Core.Tests.Unit.FileSystem
+namespace Lithogen.Core.Tests.Unit.FileSystem.IFileSystemTests
 {
-    public abstract class IFileSystem_DirectoryExists_Base<T> : IFileSystem_Base<T>
+    public abstract class DirectoryExists<T> : IFileSystemBase<T>
         where T : IFileSystem, new()
     {
         [Test]

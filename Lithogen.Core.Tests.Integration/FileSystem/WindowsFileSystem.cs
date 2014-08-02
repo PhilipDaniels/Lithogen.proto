@@ -6,6 +6,7 @@ using System.IO;
 
 namespace Lithogen.Core.Tests.Integration.FileSystem
 {
+    /*
     public class WindowsFileSystem_CreateDirectory : IFileSystem_CreateDirectory_Base<WindowsFileSystem>
     {
         [Test]
@@ -41,4 +42,5 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
             DeletePhysicalTestDirectories();
         }
     }
+     */ 
 }

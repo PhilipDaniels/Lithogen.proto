@@ -3,9 +3,9 @@ using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Lithogen.Core.Tests.Unit.FileSystem
+namespace Lithogen.Core.Tests.Unit.FileSystem.IFileSystemTests
 {
-    public abstract class IFileSystem_CreateParentDirectory_Base<T> : IFileSystem_Base<T>
+    public abstract class CreateParentDirectory<T> : IFileSystemBase<T>
         where T : IFileSystem, new()
     {
         [Test]

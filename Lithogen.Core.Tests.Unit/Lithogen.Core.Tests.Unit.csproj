@@ -50,11 +50,11 @@
   <ItemGroup>
     <Compile Include="BuildContextTests.cs" />
     <Compile Include="BuilderTests.cs" />
-    <Compile Include="FileSystem\IFileSystem_WriteAllBytes_Base.cs" />
-    <Compile Include="FileSystem\IFileSystem_CreateParentDirectory_Base.cs" />
-    <Compile Include="FileSystem\IFileSystem_Base.cs" />
-    <Compile Include="FileSystem\IFileSystem_CreateDirectory_Base.cs" />
-    <Compile Include="FileSystem\IFileSystem_DirectoryExists_Base.cs" />
+    <Compile Include="FileSystem\IFileSystemTests\IFileSystemBase.cs" />
+    <Compile Include="FileSystem\IFileSystemTests\WriteAllBytes.cs" />
+    <Compile Include="FileSystem\IFileSystemTests\CreateParentDirectory.cs" />
+    <Compile Include="FileSystem\IFileSystemTests\CreateDirectory.cs" />
+    <Compile Include="FileSystem\IFileSystemTests\DirectoryExists.cs" />
     <Compile Include="FileSystem\MemoryFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
