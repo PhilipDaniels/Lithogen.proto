@@ -36,8 +36,24 @@
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1402.2112\lib\net40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.core">
+      <HintPath>..\packages\NUnitTestAdapter.1.1\lib\nunit.core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="nunit.core.interfaces">
+      <HintPath>..\packages\NUnitTestAdapter.1.1\lib\nunit.core.interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.util">
+      <HintPath>..\packages\NUnitTestAdapter.1.1\lib\nunit.util.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NUnit.VisualStudio.TestAdapter">
+      <HintPath>..\packages\NUnitTestAdapter.1.1\lib\NUnit.VisualStudio.TestAdapter.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,6 +71,11 @@
     <Compile Include="BuildContext_ModelsDirectory.cs" />
     <Compile Include="BuildContext_ViewsDirectory.cs" />
     <Compile Include="BuildContext_ScriptsDirectory.cs" />
+    <Compile Include="FileSystem\IFileSystem_EnumerateFiles.cs" />
+    <Compile Include="FileSystem\IFileSystem_DeleteDirectory.cs" />
+    <Compile Include="FileSystem\IFileSystem_DeleteFile.cs" />
+    <Compile Include="FileSystem\IFileSystem_FileExists.cs" />
+    <Compile Include="FileSystem\IFileSystem_ReadAllBytes.cs" />
     <Compile Include="FileSystem\IFileSystemBase.cs" />
     <Compile Include="FileSystem\IFileSystem_WriteAllBytes.cs" />
     <Compile Include="FileSystem\IFileSystem_CreateParentDirectory.cs" />

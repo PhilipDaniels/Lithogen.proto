@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Lithogen.Interfaces.FileSystem
 {
@@ -14,10 +11,28 @@ namespace Lithogen.Interfaces.FileSystem
     /// </summary>
     public interface IFileSystem
     {
+        bool FileExists(string filename);
         bool DirectoryExists(string directory); 
+
         void CreateDirectory(string directory);
         void CreateParentDirectory(string filename);
 
         void WriteAllBytes(string filename, byte[] bytes);
+        byte[] ReadAllBytes(string filename);
+
+        void DeleteFile(string filename);
+        void DeleteDirectory(string directory);
+
+        IEnumerable<string> EnumerateFiles(string directory);
+        IEnumerable<string> EnumerateFiles(string directory, string searchPattern);
+        IEnumerable<string> EnumerateFiles(string directory, string searchPattern, SearchOption searchOption);
+
+        //string ReadAllText(string filename);  // This variant attempts to guess the encoding.
+        //string ReadAllText(string filename, Encoding encoding);
+
+        //void WriteAllText(string filename, string contents);                    // Write UTF-8 text without a BOM.
+        //void WriteAllText(string filename, string contents, Encoding encoding); // Write encoded text with a BOM.
+
+        //Stream Open(string filename); reader or writer?  See File.Open(...);
     }
 }

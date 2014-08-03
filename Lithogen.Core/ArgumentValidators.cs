@@ -304,5 +304,30 @@ namespace Lithogen.Core
 
             return path;
         }
+
+        /// <summary>
+        /// Throws a <code>ArgumentException</code> if <typeparamref name="T"/> is not an enumerated type.
+        /// Throws a <code>ArgumentOutOfRangeException</code> if <paramref name="enumerand"/> is not a valid value within <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the enumeration.</typeparam>
+        /// <param name="enumerand">The value of the enumeration.</param>
+        /// <param name="parameterName">The name of the parameter.</param>
+        /// <returns><paramref name="enumerand"/> if no exception is thrown.</returns>
+        public static T ThrowIfInvalidEnumerand<T>([ValidatedNotNull] this T enumerand, string parameterName)
+        {
+            Type enumType = typeof(T);
+            if (!enumType.IsEnum)
+            {
+                throw new ArgumentException("The type " + enumType.FullName + " is not an enumerated type.");
+            }
+
+            if (!Enum.IsDefined(enumType, enumerand))
+            {
+                string msg = String.Format(CultureInfo.InvariantCulture, "The value {0} is not valid for enumeration {1}.", enumerand, enumType.FullName);
+                throw new ArgumentOutOfRangeException(msg);
+            }
+
+            return enumerand;
+        }
     }
 }
