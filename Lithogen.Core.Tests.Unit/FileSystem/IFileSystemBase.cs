@@ -17,6 +17,7 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
         public static readonly byte[] T_EmptyBytes = new byte[] { };
         public static readonly byte[] T_OneByte = new byte[] { 1 };
         public static readonly byte[] T_ThreeBytes = new byte[] { 1, 2, 3 };
+        public const string T_String = @"Hello world in Japanese ハローワールド";
 
         [SetUp]
         public virtual void Setup()
@@ -68,6 +69,15 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
                 yield return new TestCaseData(T_File1, T_EmptyBytes);  
                 yield return new TestCaseData(T_File1, T_OneByte);
                 yield return new TestCaseData(T_File1, T_ThreeBytes);
+            }
+        }
+
+        public IEnumerable<TestCaseData> ValidStringFiles
+        {
+            get
+            {
+                yield return new TestCaseData(T_File1, "");
+                yield return new TestCaseData(T_File1, T_String);
             }
         }
     }

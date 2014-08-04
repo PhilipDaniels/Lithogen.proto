@@ -10,19 +10,7 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
     {
     }
 
-    public class MemoryFileSystem_DirectoryExists : IFileSystem_DirectoryExists<MemoryFileSystem>
-    {
-    }
-
-    public class MemoryFileSystem_WriteAllBytes : IFileSystem_WriteAllBytes<MemoryFileSystem>
-    {
-    }
-
-    public class MemoryFileSystem_ReadAllBytes : IFileSystem_ReadAllBytes<MemoryFileSystem>
-    {
-    }
-
-    public class MemoryFileSystem_FileExists : IFileSystem_FileExists<MemoryFileSystem>
+    public class MemoryFileSystem_DeleteDirectory : IFileSystem_DeleteDirectory<MemoryFileSystem>
     {
     }
 
@@ -30,11 +18,31 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
     {
     }
 
-    public class MemoryFileSystem_DeleteDirectory : IFileSystem_DeleteDirectory<MemoryFileSystem>
+    public class MemoryFileSystem_DirectoryExists : IFileSystem_DirectoryExists<MemoryFileSystem>
     {
     }
 
     public class MemoryFileSystem_EnumerateFiles : IFileSystem_EnumerateFiles<MemoryFileSystem>
+    {
+    }
+
+    public class MemoryFileSystem_FileExists : IFileSystem_FileExists<MemoryFileSystem>
+    {
+    }
+
+    public class MemoryFileSystem_ReadAllBytes : IFileSystem_ReadAllBytes<MemoryFileSystem>
+    {
+    }
+
+    public class MemoryFileSystem_ReadAllText : IFileSystem_ReadAllText<MemoryFileSystem>
+    {
+    }
+
+    public class MemoryFileSystem_WriteAllBytes : IFileSystem_WriteAllBytes<MemoryFileSystem>
+    {
+    }
+
+    public class MemoryFileSystem_WriteAllText : IFileSystem_WriteAllText<MemoryFileSystem>
     {
     }
 }

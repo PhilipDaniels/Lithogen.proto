@@ -1,6 +1,7 @@
 ﻿using Lithogen.Interfaces.FileSystem;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace Lithogen.Core.FileSystem
 {
@@ -52,28 +53,27 @@ namespace Lithogen.Core.FileSystem
         {
             filename.ThrowIfNullOrWhiteSpace("filename");
             if (File.Exists(filename))
-            {
                 File.Delete(filename);
-            }
         }
 
         public void DeleteDirectory(string directory)
         {
             directory.ThrowIfNullOrWhiteSpace("directory");
             if (Directory.Exists(directory))
-            {
                 Directory.Delete(directory, true);
-            }
         }
 
         public IEnumerable<string> EnumerateFiles(string directory)
         {
-            return Directory.EnumerateFiles(directory, "*", SearchOption.TopDirectoryOnly);
+            directory.ThrowIfNullOrWhiteSpace("directory");
+            return EnumerateFiles(directory, "*", SearchOption.TopDirectoryOnly);
         }
 
         public IEnumerable<string> EnumerateFiles(string directory, string searchPattern)
         {
-            return Directory.EnumerateFiles(directory, searchPattern, SearchOption.TopDirectoryOnly);
+            directory.ThrowIfNullOrWhiteSpace("directory");
+            searchPattern.ThrowIfNullOrWhiteSpace("searchPattern");
+            return EnumerateFiles(directory, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
         public IEnumerable<string> EnumerateFiles(string directory, string searchPattern, SearchOption searchOption)
@@ -83,6 +83,38 @@ namespace Lithogen.Core.FileSystem
             searchOption.ThrowIfInvalidEnumerand<SearchOption>("searchOption");
             directory.ThrowIfDirectoryDoesNotExist("directory");
             return Directory.EnumerateFiles(directory, searchPattern, searchOption);
+        }
+
+        public string ReadAllText(string filename)
+        {
+            filename.ThrowIfNullOrWhiteSpace("filename");
+            filename.ThrowIfFileDoesNotExist("filename");
+            return File.ReadAllText(filename);
+        }
+
+        public string ReadAllText(string filename, Encoding encoding)
+        {
+            filename.ThrowIfNullOrWhiteSpace("filename");
+            encoding.ThrowIfNull("encoding"); 
+            filename.ThrowIfFileDoesNotExist("filename");
+            return File.ReadAllText(filename, encoding);
+        }
+
+        public void WriteAllText(string filename, string contents)
+        {
+            filename.ThrowIfNullOrWhiteSpace("filename");
+            contents.ThrowIfNull("contents");
+            CreateParentDirectory(filename);
+            File.WriteAllText(filename, contents);
+        }
+
+        public void WriteAllText(string filename, string contents, Encoding encoding)
+        {
+            filename.ThrowIfNullOrWhiteSpace("filename");
+            contents.ThrowIfNull("contents");
+            encoding.ThrowIfNull("encoding");
+            CreateParentDirectory(filename);
+            File.WriteAllText(filename, contents, encoding);
         }
     }
 }

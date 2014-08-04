@@ -16,7 +16,7 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             TheFS.WriteAllBytes(filename, bytes);
         }
 
-        [TestCase(@"C:\foo", null, ExpectedException = typeof(ArgumentNullException))]
+        [TestCase(T_File1, null, ExpectedException = typeof(ArgumentNullException))]
         public virtual void WhenByteArrayIsNull_ThrowsArgumentNullException(string filename, byte[] bytes)
         {
             TheFS.WriteAllBytes(filename, bytes);

@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Lithogen.Core.FileSystem
 {
@@ -11,25 +14,25 @@ namespace Lithogen.Core.FileSystem
     /// </summary>
     public class MemoryFileSystem : IFileSystem
     {
-        // We only hold files. A directory is deemed to exist if there is a
-        // key which begins with it.
         Dictionary<string, byte[]> Files;
+        HashSet<string> Directories;
 
         public MemoryFileSystem()
         {
             Files = new Dictionary<string, byte[]>();
+            Directories = new HashSet<string>();
         }
 
         public bool DirectoryExists(string directory)
         {
             directory.ThrowIfNullOrWhiteSpace("directory");
-            return Files.Keys.Any(k => k.StartsWith(directory));
+            return Directories.Contains(directory) || Files.Keys.Any(k => k.StartsWith(directory));
         }
 
         public void CreateDirectory(string directory)
         {
             directory.ThrowIfNullOrWhiteSpace("directory");
-            Files[directory] = null;
+            Directories.Add(directory);
         }
 
         public void CreateParentDirectory(string filename)
@@ -43,7 +46,6 @@ namespace Lithogen.Core.FileSystem
         {
             filename.ThrowIfNullOrWhiteSpace("filename");
             bytes.ThrowIfNull("bytes");
-
             CreateParentDirectory(filename);
             Files[filename] = bytes;
         }
@@ -79,15 +81,19 @@ namespace Lithogen.Core.FileSystem
             {
                 Files.Remove(key);
             }
+            Directories.RemoveWhere(d => d.StartsWith(directory));
         }
 
         public IEnumerable<string> EnumerateFiles(string directory)
         {
+            directory.ThrowIfNullOrWhiteSpace("directory");
             return EnumerateFiles(directory, "*", SearchOption.TopDirectoryOnly);
         }
 
         public IEnumerable<string> EnumerateFiles(string directory, string searchPattern)
         {
+            directory.ThrowIfNullOrWhiteSpace("directory");
+            searchPattern.ThrowIfNullOrWhiteSpace("searchPattern");
             return EnumerateFiles(directory, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
@@ -98,34 +104,142 @@ namespace Lithogen.Core.FileSystem
             searchOption.ThrowIfInvalidEnumerand<SearchOption>("searchOption");
             if (!DirectoryExists(directory))
                 throw new DirectoryNotFoundException("The directory " + directory + " does not exist.");
-
-
-            // Problem cannot tell that
-            //    c:\foo\subdir
-            // is supposed to be a subdirectory and not a file!
+            Regex regex = MakeRegexFromSearchPattern(searchPattern);
 
             var files = from filename in Files.Keys
                         where filename.StartsWith(directory) &&
                               filename.Length > directory.Length &&
-                              (searchOption == SearchOption.AllDirectories || FileIsInDir(filename, directory))
+                              (searchOption == SearchOption.AllDirectories || FileIsDirectlyInDir(filename, directory)) &&
+                              (searchPattern == "*" || (regex != null && regex.IsMatch(filename)))
                         select filename;
-
+            
             return files;
-            //return Directory.EnumerateFiles(directory, searchPattern, searchOption);
         }
 
-        bool FileIsInDir(string filename, string directory)
+        public string ReadAllText(string filename)
+        {
+            filename.ThrowIfNullOrWhiteSpace("filename");
+            if (!FileExists(filename))
+                throw new FileNotFoundException("The file " + filename + " does not exist.");
+            return UTF8NoBOM.GetString(Files[filename]);
+        }
+
+        public string ReadAllText(string filename, Encoding encoding)
+        {
+            filename.ThrowIfNullOrWhiteSpace("filename");
+            encoding.ThrowIfNull("encoding");
+            if (!FileExists(filename))
+                throw new FileNotFoundException("The file " + filename + " does not exist.");
+            return encoding.GetString(Files[filename]);
+        }
+
+        public void WriteAllText(string filename, string contents)
+        {
+            filename.ThrowIfNullOrWhiteSpace("filename");
+            contents.ThrowIfNull("contents");
+            CreateParentDirectory(filename);
+            // Copy semantics of File.WriteAllText, UTF-8 with no BOM.
+            // This is from dotPeek inspection.
+            Files[filename] = UTF8NoBOM.GetBytes(contents);
+        }
+
+        public void WriteAllText(string filename, string contents, Encoding encoding)
+        {
+            filename.ThrowIfNullOrWhiteSpace("filename");
+            contents.ThrowIfNull("contents");
+            encoding.ThrowIfNull("encoding");
+            CreateParentDirectory(filename);
+            Files[filename] = encoding.GetBytes(contents);
+        }
+
+        // Taken from dotPeek of StreamWriter.cs.
+        internal static Encoding UTF8NoBOM
+        {
+            get
+            {
+                if (_UTF8NoBOM == null)
+                {
+                    UTF8Encoding utf8Encoding = new UTF8Encoding(false, true);
+                    Thread.MemoryBarrier();
+                    _UTF8NoBOM = (Encoding)utf8Encoding;
+                }
+                return _UTF8NoBOM;
+            }
+        }
+        static volatile Encoding _UTF8NoBOM;
+
+        bool FileIsDirectlyInDir(string filename, string directory)
         {
             return filename.StartsWith(directory) &&
                    filename.IndexOf(Path.DirectorySeparatorChar, directory.Length + 1) == -1;
         }
 
-        string InternalDirectoryNameRepresentation(string directory)
+        Regex MakeRegexFromSearchPattern(string pattern)
         {
-            if (directory[directory.Length -1 ] == Path.DirectorySeparatorChar)
-                return directory;
+            // http://stackoverflow.com/questions/6907720/need-to-perform-wildcard-etc-search-on-a-string-using-regex/16488364#16488364
+            var dotdot = pattern.IndexOf("..", StringComparison.Ordinal);
+            if (dotdot >= 0)
+            {
+                for (var i = dotdot; i < pattern.Length; i++)
+                    if (pattern[i] != '.')
+                        return null;
+            }
+
+            var normalized = Regex.Replace(pattern, @"\.+$", "");
+            var endsWithDot = normalized.Length != pattern.Length;
+            var endWeight = 0;
+            if (endsWithDot)
+            {
+                var lastNonWildcard = normalized.Length - 1;
+                for (; lastNonWildcard >= 0; lastNonWildcard--)
+                {
+                    var c = normalized[lastNonWildcard];
+                    if (c == '*')
+                        endWeight += short.MaxValue;
+                    else if (c == '?')
+                        endWeight += 1;
+                    else
+                        break;
+                }
+
+                if (endWeight > 0)
+                    normalized = normalized.Substring(0, lastNonWildcard + 1);
+            }
+
+            var endsWithWildcardDot = endWeight > 0;
+            var endsWithDotWildcardDot = endsWithWildcardDot && normalized.EndsWith(".");
+            if (endsWithDotWildcardDot)
+                normalized = normalized.Substring(0, normalized.Length - 1);
+
+            normalized = Regex.Replace(normalized, @"(?!^)(\.\*)+$", @".*");
+
+            var escaped = Regex.Escape(normalized);
+            string head, tail;
+
+            if (endsWithDotWildcardDot)
+            {
+                head = "^" + escaped;
+                tail = @"(\.[^.]{0," + endWeight + "})?$";
+            }
+            else if (endsWithWildcardDot)
+            {
+                head = "^" + escaped;
+                tail = "[^.]{0," + endWeight + "}$";
+            }
             else
-                return directory + Path.DirectorySeparatorChar;
+            {
+                head = "^" + escaped;
+                tail = "$";
+            }
+
+            if (head.EndsWith(@"\.\*") && head.Length > 5)
+            {
+                head = head.Substring(0, head.Length - 4);
+                tail = @"(\..*)?" + tail;
+            }
+
+            string regexString = head.Replace(@"\*", ".*").Replace(@"\?", "[^.]?") + tail;
+            return new Regex(regexString, RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
     }
 }

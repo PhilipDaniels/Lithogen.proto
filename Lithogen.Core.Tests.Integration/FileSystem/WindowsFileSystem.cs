@@ -40,71 +40,6 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
         }
     }
 
-    public class WindowsFileSystem_DirectoryExists : IFileSystem_DirectoryExists<WindowsFileSystem>
-    {
-        [TestCase(T_ParentDir)]
-        public override void WhenDirectoryAlreadyExists_ReturnsTrue(string directory)
-        {
-            base.WhenDirectoryAlreadyExists_ReturnsTrue(directory);
-            // Ensure the physical directory really does exist.
-            Assert.True(Directory.Exists(directory));
-        }
-
-        [TestCase(T_ParentDir)]
-        public override void WhenDirectoryDoesNotExist_ReturnsFalse(string directory)
-        {
-            base.WhenDirectoryDoesNotExist_ReturnsFalse(directory);
-            // Ensure the physical directory really does not exist.
-            Assert.False(Directory.Exists(directory));
-        }
-    }
-
-    public class WindowsFileSystem_FileExists : IFileSystem_FileExists<WindowsFileSystem>
-    {
-        [TestCase(T_File1)]
-        public override void WhenFileDoesExist_ReturnsTrue(string filename)
-        {
-            base.WhenFileDoesExist_ReturnsTrue(filename);
-            // Ensure the file really does exist.
-            Assert.True(File.Exists(filename));
-        }
-
-        [TestCase(T_FileThatDoesNotExist)]
-        public override void WhenFileDoesNotExist_ReturnsFalse(string filename)
-        {
-            base.WhenFileDoesNotExist_ReturnsFalse(filename);
-            // Ensure the file really does not exist.
-            Assert.False(File.Exists(filename));
-        }
-    }
-
-    public class WindowsFileSystem_ReadAllBytes : IFileSystem_ReadAllBytes<WindowsFileSystem>
-    {
-    }
-
-    public class WindowsFileSystem_WriteAllBytes : IFileSystem_WriteAllBytes<WindowsFileSystem>
-    {
-    }
-
-    public class WindowsFileSystem_DeleteFile : IFileSystem_DeleteFile<WindowsFileSystem>
-    {
-        [TestCase(T_File1)]
-        public override void WhenFileDoesExist_Succeeds(string filename)
-        {
-            base.WhenFileDoesExist_Succeeds(filename);
-            // Ensure the file really does not exist.
-            Assert.False(File.Exists(filename));
-        }
-
-        [TestCase(T_FileThatDoesNotExist)]
-        public override void WhenFileDoesNotExist_Succeeds(string filename)
-        {
-            base.WhenFileDoesNotExist_Succeeds(filename);
-            // Ensure the file really does not exist.
-            Assert.False(File.Exists(filename));
-        }
-    }
-
     public class WindowsFileSystem_DeleteDirectory : IFileSystem_DeleteDirectory<WindowsFileSystem>
     {
         [TestCase(T_DirectoryThatDoesNotExist)]
@@ -138,5 +73,82 @@ namespace Lithogen.Core.Tests.Integration.FileSystem
             // Check the directory is really gone.
             Assert.False(Directory.Exists(directory));
         }
+    }
+
+    public class WindowsFileSystem_DeleteFile : IFileSystem_DeleteFile<WindowsFileSystem>
+    {
+        [TestCase(T_File1)]
+        public override void WhenFileDoesExist_Succeeds(string filename)
+        {
+            base.WhenFileDoesExist_Succeeds(filename);
+            // Ensure the file really does not exist.
+            Assert.False(File.Exists(filename));
+        }
+
+        [TestCase(T_FileThatDoesNotExist)]
+        public override void WhenFileDoesNotExist_Succeeds(string filename)
+        {
+            base.WhenFileDoesNotExist_Succeeds(filename);
+            // Ensure the file really does not exist.
+            Assert.False(File.Exists(filename));
+        }
+    }
+
+    public class WindowsFileSystem_DirectoryExists : IFileSystem_DirectoryExists<WindowsFileSystem>
+    {
+        [TestCase(T_ParentDir)]
+        public override void WhenDirectoryAlreadyExists_ReturnsTrue(string directory)
+        {
+            base.WhenDirectoryAlreadyExists_ReturnsTrue(directory);
+            // Ensure the physical directory really does exist.
+            Assert.True(Directory.Exists(directory));
+        }
+
+        [TestCase(T_ParentDir)]
+        public override void WhenDirectoryDoesNotExist_ReturnsFalse(string directory)
+        {
+            base.WhenDirectoryDoesNotExist_ReturnsFalse(directory);
+            // Ensure the physical directory really does not exist.
+            Assert.False(Directory.Exists(directory));
+        }
+    }
+
+    public class WindowsFileSystem_EnumerateFiles : IFileSystem_EnumerateFiles<WindowsFileSystem>
+    {
+    }
+
+    public class WindowsFileSystem_FileExists : IFileSystem_FileExists<WindowsFileSystem>
+    {
+        [TestCase(T_File1)]
+        public override void WhenFileDoesExist_ReturnsTrue(string filename)
+        {
+            base.WhenFileDoesExist_ReturnsTrue(filename);
+            // Ensure the file really does exist.
+            Assert.True(File.Exists(filename));
+        }
+
+        [TestCase(T_FileThatDoesNotExist)]
+        public override void WhenFileDoesNotExist_ReturnsFalse(string filename)
+        {
+            base.WhenFileDoesNotExist_ReturnsFalse(filename);
+            // Ensure the file really does not exist.
+            Assert.False(File.Exists(filename));
+        }
+    }
+
+    public class WindowsFileSystem_ReadAllBytes : IFileSystem_ReadAllBytes<WindowsFileSystem>
+    {
+    }
+
+    public class WindowsFileSystem_ReadAllText : IFileSystem_ReadAllText<WindowsFileSystem>
+    {
+    }
+
+    public class WindowsFileSystem_WriteAllBytes : IFileSystem_WriteAllBytes<WindowsFileSystem>
+    {
+    }
+
+    public class WindowsFileSystem_WriteAllText : IFileSystem_WriteAllText<WindowsFileSystem>
+    {
     }
 }
