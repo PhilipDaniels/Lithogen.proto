@@ -83,6 +83,7 @@
     <Compile Include="FileSystem\IFileSystem_CreateParentDirectory.cs" />
     <Compile Include="FileSystem\IFileSystem_CreateDirectory.cs" />
     <Compile Include="FileSystem\IFileSystem_DirectoryExists.cs" />
+    <Compile Include="FileSystem\LowerCasingFileSystemTests.cs" />
     <Compile Include="FileSystem\MemoryFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

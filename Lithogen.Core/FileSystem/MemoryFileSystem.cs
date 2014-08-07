@@ -11,6 +11,7 @@ namespace Lithogen.Core.FileSystem
 {
     /// <summary>
     /// An implementation of IFileSystem that is backed by an in-RAM store.
+    /// n.b. This file system is case-preserving (like Windows) and case-sensitive (unlike Windows).
     /// </summary>
     public class MemoryFileSystem : IFileSystem
     {
