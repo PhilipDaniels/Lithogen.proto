@@ -13,7 +13,7 @@ namespace Lithogen.Interfaces.FileSystem
     public interface IFileSystem
     {
         bool FileExists(string filename);
-        bool DirectoryExists(string directory); 
+        bool DirectoryExists(string directory);
 
         void CreateDirectory(string directory);
         void CreateParentDirectory(string filename);

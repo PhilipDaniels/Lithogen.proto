@@ -1,6 +1,5 @@
 ﻿using Lithogen.Interfaces.FileSystem;
 using NUnit.Framework;
-using System;
 
 namespace Lithogen.Core.Tests.Unit.FileSystem
 {

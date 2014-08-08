@@ -62,6 +62,9 @@
     <Compile Include="BuildContext.cs" />
     <Compile Include="Builder.cs" />
     <Compile Include="BuildSteps\RazorSiteBuildStep.cs" />
+    <Compile Include="FileSystem\CountingFileSystem.cs" />
+    <Compile Include="FileSystem\FileSystemStats.cs" />
+    <Compile Include="FileSystem\ICountingFileSystem.cs" />
     <Compile Include="FileSystem\LowerCasingFileSystem.cs" />
     <Compile Include="FileSystem\MemoryFileSystem.cs" />
     <Compile Include="FileSystem\WindowsFileSystem.cs" />

@@ -1,4 +1,5 @@
-﻿using Lithogen.Interfaces.FileSystem;
+﻿using Lithogen.Core.FileSystem;
+using Lithogen.Interfaces.FileSystem;
 using NUnit.Framework;
 
 namespace Lithogen.Core.Tests.Unit.FileSystem
