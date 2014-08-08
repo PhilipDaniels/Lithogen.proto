@@ -1,15 +1,15 @@
 ﻿using Lithogen.Interfaces.FileSystem;
-using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Lithogen.Core.FileSystem
 {
     /// <summary>
     /// The <code>LowerCasingFileSystem</code> can be used to wrap an inner file system.
-    /// It will force all file and directory names used to be converted to lower case.
-    /// It is an example of the Decorator pattern.
+    /// It will force all file and directory names used as inputs and returned as results
+    /// to be converted to lower case. It is an example of the Decorator pattern.
     /// </summary>
     public class LowerCasingFileSystem : IFileSystem
     {
@@ -57,42 +57,45 @@ namespace Lithogen.Core.FileSystem
 
         public void DeleteDirectory(string directory)
         {
-            throw new NotImplementedException();
+            WrappedFileSystem.DeleteDirectory(MakeLower(directory));
         }
 
         public IEnumerable<string> EnumerateFiles(string directory)
         {
-            throw new NotImplementedException();
+            return from f in WrappedFileSystem.EnumerateFiles(MakeLower(directory))
+                   select f.ToLowerInvariant();
         }
 
         public IEnumerable<string> EnumerateFiles(string directory, string searchPattern)
         {
-            throw new NotImplementedException();
+            return from f in WrappedFileSystem.EnumerateFiles(MakeLower(directory), searchPattern)
+                   select f.ToLowerInvariant();
         }
 
         public IEnumerable<string> EnumerateFiles(string directory, string searchPattern, SearchOption searchOption)
         {
-            throw new NotImplementedException();
+            return from f in WrappedFileSystem.EnumerateFiles(MakeLower(directory), searchPattern, searchOption)
+                   select f.ToLowerInvariant();
         }
 
         public string ReadAllText(string filename)
         {
-            throw new NotImplementedException();
+            return WrappedFileSystem.ReadAllText(MakeLower(filename));
         }
 
         public string ReadAllText(string filename, Encoding encoding)
         {
-            throw new NotImplementedException();
+            return WrappedFileSystem.ReadAllText(MakeLower(filename), encoding);
         }
 
         public void WriteAllText(string filename, string contents)
         {
-            throw new NotImplementedException();
+            WrappedFileSystem.WriteAllText(MakeLower(filename), contents);
         }
 
         public void WriteAllText(string filename, string contents, Encoding encoding)
         {
-            throw new NotImplementedException();
+            WrappedFileSystem.WriteAllText(MakeLower(filename), contents, encoding);
         }
 
         string MakeLower(string filename)
