@@ -1,13 +1,8 @@
 ﻿using Lithogen.Core.FileSystem;
 using Lithogen.Interfaces.FileSystem;
-using Moq;
+using NSubstitute;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lithogen.Core.Tests.Unit.FileSystem
 {
@@ -24,14 +19,10 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
         [SetUp]
         public virtual void Setup()
         {
-            // The MemoryFileSystem is case-sensitive and case-preserving.
-            // The assertions in here rely on that.
-            // We need to have a separate handle to it so that we can check that
-            // the LowerCasingFileSystem is passing the right thing on.
-            WrappedFS = new MemoryFileSystem();
-            LowerCaseFS = new LowerCasingFileSystem(WrappedFS);
+            MockFS = Substitute.For<IFileSystem>();
+            LowerCaseFS = new LowerCasingFileSystem(MockFS);
         }
-        public MemoryFileSystem WrappedFS;
+        public IFileSystem MockFS;
         public LowerCasingFileSystem LowerCaseFS;
 
         [Test]
@@ -43,65 +34,57 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
         [TestCase(T_File1)]
         public virtual void FileExists_WhenFilenameIsMixed_ForcesToLowerCase(string filename)
         {
-            // It appears the only way we can test this is first to write a file...
-            WriteAllBytes_WhenFilenameIsMixed_ForcesToLowerCase(filename);
+            MockFS.FileExists(filename.ToLowerInvariant()).Returns(true);
+            Assert.True(LowerCaseFS.FileExists(filename));
+            MockFS.Received().FileExists(filename.ToLowerInvariant());
         }
 
         [TestCase(T_File1)]
         public virtual void DirectoryExists_WhenFilenameIsMixed_ForcesToLowerCase(string filename)
         {
-            WriteAllBytes_WhenFilenameIsMixed_ForcesToLowerCase(filename);
-            string directory = Path.GetDirectoryName(filename);
-            Assert.False(WrappedFS.DirectoryExists(directory));
-            Assert.True(WrappedFS.DirectoryExists(directory.ToLowerInvariant()));
-            Assert.True(LowerCaseFS.DirectoryExists(directory));
+            MockFS.DirectoryExists(filename.ToLowerInvariant()).Returns(true);
+            Assert.True(LowerCaseFS.DirectoryExists(filename));
+            MockFS.Received().DirectoryExists(filename.ToLowerInvariant());
         }
 
         [TestCase(T_Directory)]
         public virtual void CreateDirectory_WhenDirectoryIsMixed_ForcesToLowerCase(string directory)
         {
+            MockFS.CreateDirectory(directory.ToLowerInvariant());
             LowerCaseFS.CreateDirectory(directory);
-            Assert.False(WrappedFS.DirectoryExists(directory));
-            Assert.True(WrappedFS.DirectoryExists(directory.ToLowerInvariant()));
-            Assert.True(LowerCaseFS.DirectoryExists(directory));
+            MockFS.Received().CreateDirectory(directory.ToLowerInvariant());
         }
 
         [TestCase(T_File1)]
         public virtual void CreateParentDirectory_WhenFilenameIsMixed_ForcesToLowerCase(string filename)
         {
+            MockFS.CreateParentDirectory(filename.ToLowerInvariant());
             LowerCaseFS.CreateParentDirectory(filename);
-            string directory = Path.GetDirectoryName(filename);
-            Assert.False(WrappedFS.DirectoryExists(directory));
-            Assert.True(WrappedFS.DirectoryExists(directory.ToLowerInvariant()));
-            Assert.True(LowerCaseFS.DirectoryExists(directory));
+            MockFS.Received().CreateParentDirectory(filename.ToLowerInvariant());
         }
 
         [TestCase(T_File1)]
         public virtual void WriteAllBytes_WhenFilenameIsMixed_ForcesToLowerCase(string filename)
         {
+            MockFS.WriteAllBytes(filename.ToLowerInvariant(), T_Bytes);
             LowerCaseFS.WriteAllBytes(filename, T_Bytes);
-            Assert.False(WrappedFS.FileExists(filename));
-            Assert.True(WrappedFS.FileExists(filename.ToLowerInvariant()));
-            Assert.True(LowerCaseFS.FileExists(filename));
+            MockFS.Received().WriteAllBytes(filename.ToLowerInvariant(), T_Bytes);
         }
 
         [TestCase(T_File1)]
         public virtual void ReadAllBytes_WhenFilenameIsMixed_ForcesToLowerCase(string filename)
         {
-            // Make a file.
-            WriteAllBytes_WhenFilenameIsMixed_ForcesToLowerCase(filename);
-            var readBack = LowerCaseFS.ReadAllBytes(filename);
-            CollectionAssert.AreEqual(T_Bytes, readBack);
+            MockFS.ReadAllBytes(filename.ToLowerInvariant()).Returns(T_Bytes);
+            Assert.AreEqual(LowerCaseFS.ReadAllBytes(filename), T_Bytes);
+            MockFS.Received().ReadAllBytes(filename.ToLowerInvariant());
         }
 
         [TestCase(T_File1)]
         public virtual void DeleteFile_WhenFilenameIsMixed_ForcesToLowerCase(string filename)
         {
-            var mock = new Mock<IFileSystem>();
-            var lcFS = new LowerCasingFileSystem(mock.Object);
-            mock.Setup(m => m.DeleteFile(It.Is<string>(s => s == filename.ToUpperInvariant())));
-            lcFS.DeleteFile(filename);
-            mock.Verify();
+            MockFS.DeleteFile(filename.ToLowerInvariant());
+            LowerCaseFS.DeleteFile(filename);
+            MockFS.Received().DeleteFile(filename.ToLowerInvariant());
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Lithogen.Interfaces;
-using Moq;
+using NSubstitute;
 using NUnit.Framework;
 using System;
 
@@ -17,8 +17,8 @@ namespace Lithogen.Core.Tests.Unit
         [Test]
         public void Ctor_WhenCompleted_CreatesEmptyStepsCollection()
         {
-            var bc = new Mock<IBuildContext>();
-            var b = new Builder(bc.Object);
+            var bc = Substitute.For<IBuildContext>();
+            var b = new Builder(bc);
             Assert.NotNull(b.Steps);
             Assert.IsEmpty(b.Steps);
         }
