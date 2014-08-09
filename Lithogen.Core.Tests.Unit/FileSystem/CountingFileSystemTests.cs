@@ -10,14 +10,6 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
 {
     public class CountingFileSystemTests
     {
-        public const string T_Directory = @"C:\temp\Lithogen_testdir";
-        public const string T_File1 = @"C:\temp\Lithogen_testdir\MixedCaseFile.dat";
-        public const string T_FileWithoutExtension = @"C:\temp\Lithogen_testdir\FileWithoutExtension";
-        public static readonly byte[] T_EmptyBytes = new byte[] { };
-        public static readonly byte[] T_Bytes = new byte[] { 1, 2, 3 };
-        public static readonly string[] T_Files = new string[] { "File1.txt", "File2.txt", "File3.txt" };
-        public static string T_SomeText = "Hello World";
-
         [SetUp]
         public virtual void Setup()
         {
@@ -41,8 +33,8 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             Assert.IsEmpty(TheCountingFS.StatsByExtension);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void FileExists_WhenCalled_DoesNotChangeStats(string filename)
         {
             TheMockFS.FileExists(filename).Returns(true);
@@ -52,7 +44,7 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             TheMockFS.Received().FileExists(filename);
         }
 
-        [TestCase(T_Directory)]
+        [TestCase(TestData.TestRootDirectory)]
         public virtual void DirectoryExists_WhenCalled_DoesNotChangeStats(string directory)
         {
             TheMockFS.DirectoryExists(directory).Returns(true);
@@ -62,7 +54,7 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             TheMockFS.Received().DirectoryExists(directory);
         }
 
-        [TestCase(T_Directory)]
+        [TestCase(TestData.TestRootDirectory)]
         public virtual void CreateDirectory_WhenCalled_DoesNotChangeStats(string directory)
         {
             TheCountingFS.CreateDirectory(directory);
@@ -71,8 +63,8 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             TheMockFS.Received().CreateDirectory(directory);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void CreateParentDirectory_WhenCalled_DoesNotChangeStats(string filename)
         {
             TheCountingFS.CreateParentDirectory(filename);
@@ -104,18 +96,18 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             TheMockFS.Received().WriteAllBytes(filename, bytes);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void WriteAllBytes_ForEmptyByteArray_IncrementsFilesWrittenButNotBytesWritten(string filename)
         {
-            WriteAllBytesImpl(filename, T_EmptyBytes);
+            WriteAllBytesImpl(filename, TestData.EmptyByteArray);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void WriteAllBytes_ForNonEmptyByteArray_IncrementsFilesWrittenAndBytesWritten(string filename)
         {
-            WriteAllBytesImpl(filename, T_Bytes);
+            WriteAllBytesImpl(filename, TestData.ThreeByteArray);
         }
 
         void ReadAllBytesImpl(string filename, byte[] bytes)
@@ -143,22 +135,22 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             TheMockFS.Received().ReadAllBytes(filename);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void ReadAllBytes_ForEmptyByteArray_IncrementsFilesReadButNotBytesRead(string filename)
         {
-            ReadAllBytesImpl(filename, T_EmptyBytes);
+            ReadAllBytesImpl(filename, TestData.EmptyByteArray);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void ReadAllBytes_ForNonEmptyByteArray_IncrementsFilesReadAndBytesRead(string filename)
         {
-            ReadAllBytesImpl(filename, T_Bytes);
+            ReadAllBytesImpl(filename, TestData.ThreeByteArray);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void DeleteFile_WhenCalled_DoesNotChangeStats(string filename)
         {
             TheCountingFS.DeleteFile(filename);
@@ -167,7 +159,7 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             TheMockFS.Received().DeleteFile(filename);
         }
 
-        [TestCase(T_Directory)]
+        [TestCase(TestData.TestRootDirectory)]
         public virtual void DeleteDirectory_WhenCalled_DoesNotChangeStats(string directory)
         {
             TheCountingFS.DeleteDirectory(directory);
@@ -176,34 +168,34 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             TheMockFS.Received().DeleteDirectory(directory);
         }
 
-        [TestCase(T_Directory)]
+        [TestCase(TestData.TestRootDirectory)]
         public virtual void EnumerateFiles1_WhenCalled_DoesNotChangeStats(string directory)
         {
-            TheMockFS.EnumerateFiles(directory).Returns(T_Files);
+            TheMockFS.EnumerateFiles(directory).Returns(TestData.MixedCaseFilenamesWithoutDirectories);
             var files = TheCountingFS.EnumerateFiles(directory);
-            Assert.AreEqual(T_Files, files);
+            Assert.AreEqual(TestData.MixedCaseFilenamesWithoutDirectories, files);
             AssertZeroStats(TheCountingFS.TotalStats);
             Assert.IsEmpty(TheCountingFS.StatsByExtension);
             TheMockFS.Received().EnumerateFiles(directory);
         }
 
-        [TestCase(T_Directory)]
+        [TestCase(TestData.TestRootDirectory)]
         public virtual void EnumerateFiles2_WhenCalled_DoesNotChangeStats(string directory)
         {
-            TheMockFS.EnumerateFiles(directory, "*").Returns(T_Files);
+            TheMockFS.EnumerateFiles(directory, "*").Returns(TestData.MixedCaseFilenamesWithoutDirectories);
             var files = TheCountingFS.EnumerateFiles(directory, "*");
-            Assert.AreEqual(T_Files, files);
+            Assert.AreEqual(TestData.MixedCaseFilenamesWithoutDirectories, files);
             AssertZeroStats(TheCountingFS.TotalStats);
             Assert.IsEmpty(TheCountingFS.StatsByExtension);
             TheMockFS.Received().EnumerateFiles(directory, "*");
         }
 
-        [TestCase(T_Directory)]
+        [TestCase(TestData.TestRootDirectory)]
         public virtual void EnumerateFiles3_WhenCalled_DoesNotChangeStats(string directory)
         {
-            TheMockFS.EnumerateFiles(directory, "*", SearchOption.AllDirectories).Returns(T_Files);
+            TheMockFS.EnumerateFiles(directory, "*", SearchOption.AllDirectories).Returns(TestData.MixedCaseFilenamesWithoutDirectories);
             var files = TheCountingFS.EnumerateFiles(directory, "*", SearchOption.AllDirectories);
-            Assert.AreEqual(T_Files, files);
+            Assert.AreEqual(TestData.MixedCaseFilenamesWithoutDirectories, files);
             AssertZeroStats(TheCountingFS.TotalStats);
             Assert.IsEmpty(TheCountingFS.StatsByExtension);
             TheMockFS.Received().EnumerateFiles(directory, "*", SearchOption.AllDirectories);
@@ -227,28 +219,28 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             Assert.AreEqual(expectedByteCount, stats.BytesRead);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void ReadAllText_ForDefaultEncoding_IncrementsFilesReadAndBytesReadByDefaultEncoding(string filename)
         {
-            TheMockFS.ReadAllText(filename).Returns(T_SomeText);
+            TheMockFS.ReadAllText(filename).Returns(TestData.UnicodeString);
             string result = TheCountingFS.ReadAllText(filename);
-            Assert.AreEqual(T_SomeText, result);
+            Assert.AreEqual(TestData.UnicodeString, result);
 
-            int byteCount = DefaultEncoding.UTF8NoBOM.GetByteCount(T_SomeText);
+            int byteCount = DefaultEncoding.UTF8NoBOM.GetByteCount(TestData.UnicodeString);
             AssertReadAllTextChecks(filename, 1, byteCount);
             TheMockFS.Received().ReadAllText(filename);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void ReadAllText_ForSpecificEncoding_IncrementsFilesReadAndBytesRead(string filename)
         {
-            TheMockFS.ReadAllText(filename, Encoding.UTF32).Returns(T_SomeText);
+            TheMockFS.ReadAllText(filename, Encoding.UTF32).Returns(TestData.UnicodeString);
             string result = TheCountingFS.ReadAllText(filename, Encoding.UTF32);
-            Assert.AreEqual(T_SomeText, result);
+            Assert.AreEqual(TestData.UnicodeString, result);
 
-            int byteCount = Encoding.UTF32.GetByteCount(T_SomeText);
+            int byteCount = Encoding.UTF32.GetByteCount(TestData.UnicodeString);
             AssertReadAllTextChecks(filename, 1, byteCount);
             TheMockFS.Received().ReadAllText(filename, Encoding.UTF32);
         }
@@ -271,32 +263,30 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             Assert.AreEqual(0, stats.BytesRead);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void WriteAllText_ForDefaultEncoding_IncrementsFilesWrittenAndBytesWrittenByDefaultEncoding(string filename)
         {
-            //TheMockFS.WriteAllText(filename, T_SomeText);
-            TheCountingFS.WriteAllText(filename, T_SomeText);
+            TheCountingFS.WriteAllText(filename, TestData.UnicodeString);
 
-            int byteCount = DefaultEncoding.UTF8NoBOM.GetByteCount(T_SomeText);
+            int byteCount = DefaultEncoding.UTF8NoBOM.GetByteCount(TestData.UnicodeString);
             AssertWriteAllTextChecks(filename, 1, byteCount);
-            TheMockFS.Received().WriteAllText(filename, T_SomeText);
+            TheMockFS.Received().WriteAllText(filename, TestData.UnicodeString);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void WriteAllText_ForSpecificEncoding_IncrementsFilesWrittenAndBytesWritten(string filename)
         {
-            //TheMockFS.WriteAllText(filename, T_SomeText, Encoding.UTF32);
-            TheCountingFS.WriteAllText(filename, T_SomeText, Encoding.UTF32);
+            TheCountingFS.WriteAllText(filename, TestData.UnicodeString, Encoding.UTF32);
 
-            int byteCount = Encoding.UTF32.GetByteCount(T_SomeText);
+            int byteCount = Encoding.UTF32.GetByteCount(TestData.UnicodeString);
             AssertWriteAllTextChecks(filename, 1, byteCount);
-            TheMockFS.Received().WriteAllText(filename, T_SomeText, Encoding.UTF32);
+            TheMockFS.Received().WriteAllText(filename, TestData.UnicodeString, Encoding.UTF32);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void MultipleWrite_IncrementsStatsTheRequiredNumberOfTimes(string filename)
         {
             // The tests all check for 1 write or read operation, but those tests
@@ -305,30 +295,30 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             const int NUM_WRITES = 5;
             for (int i = 0; i < NUM_WRITES; i++)
             {
-                TheCountingFS.WriteAllText(filename, T_SomeText);
+                TheCountingFS.WriteAllText(filename, TestData.UnicodeString);
             }
 
-            int byteCount = DefaultEncoding.UTF8NoBOM.GetByteCount(T_SomeText) * NUM_WRITES;
+            int byteCount = DefaultEncoding.UTF8NoBOM.GetByteCount(TestData.UnicodeString) * NUM_WRITES;
             AssertWriteAllTextChecks(filename, NUM_WRITES, byteCount);
-            TheMockFS.Received(NUM_WRITES).WriteAllText(filename, T_SomeText);
+            TheMockFS.Received(NUM_WRITES).WriteAllText(filename, TestData.UnicodeString);
         }
 
-        [TestCase(T_File1)]
-        [TestCase(T_FileWithoutExtension)]
+        [TestCase(TestData.Filename)]
+        [TestCase(TestData.FilenameWithoutExtension)]
         public virtual void MultipleRead_IncrementsStatsTheRequiredNumberOfTimes(string filename)
         {
             // The tests all check for 1 write or read operation, but those tests
             // would continue to pass if the CountingFileSystem did "= 1" rather
             // than "+= 1". This test is designed to catch that error.
-            TheMockFS.ReadAllText(filename).Returns(T_SomeText);
+            TheMockFS.ReadAllText(filename).Returns(TestData.UnicodeString);
             const int NUM_READS = 5;
             for (int i = 0; i < NUM_READS; i++)
             {
                 string contents = TheCountingFS.ReadAllText(filename);
-                Assert.AreEqual(T_SomeText, contents);
+                Assert.AreEqual(TestData.UnicodeString, contents);
             }
 
-            int byteCount = DefaultEncoding.UTF8NoBOM.GetByteCount(T_SomeText) * NUM_READS;
+            int byteCount = DefaultEncoding.UTF8NoBOM.GetByteCount(TestData.UnicodeString) * NUM_READS;
             AssertReadAllTextChecks(filename, NUM_READS, byteCount);
             TheMockFS.Received(NUM_READS).ReadAllText(filename);
         }
