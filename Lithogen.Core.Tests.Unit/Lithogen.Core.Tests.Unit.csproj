@@ -65,12 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuilderTests.cs" />
-    <Compile Include="BuildContextBase.cs" />
-    <Compile Include="BuildContext_ProjectDirectory.cs" />
-    <Compile Include="BuildContext_Ctor.cs" />
-    <Compile Include="BuildContext_ModelsDirectory.cs" />
-    <Compile Include="BuildContext_ViewsDirectory.cs" />
-    <Compile Include="BuildContext_ScriptsDirectory.cs" />
+    <Compile Include="BuildContextTests.cs" />
     <Compile Include="FileSystem\CountingFileSystemTests.cs" />
     <Compile Include="FileSystem\IFileSystem_WriteAllText.cs" />
     <Compile Include="FileSystem\IFileSystem_ReadAllText.cs" />
