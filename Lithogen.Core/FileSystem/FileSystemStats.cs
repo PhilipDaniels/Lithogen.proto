@@ -1,5 +1,4 @@
-﻿
-namespace Lithogen.Core.FileSystem
+﻿namespace Lithogen.Core.FileSystem
 {
     public class FileSystemStats
     {

@@ -63,6 +63,7 @@
     <Compile Include="Builder.cs" />
     <Compile Include="BuildSteps\RazorSiteBuildStep.cs" />
     <Compile Include="FileSystem\CountingFileSystem.cs" />
+    <Compile Include="FileSystem\DefaultEncoding.cs" />
     <Compile Include="FileSystem\FileSystemStats.cs" />
     <Compile Include="FileSystem\ICountingFileSystem.cs" />
     <Compile Include="FileSystem\LowerCasingFileSystem.cs" />

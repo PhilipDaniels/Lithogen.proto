@@ -122,7 +122,7 @@ namespace Lithogen.Core.FileSystem
             filename.ThrowIfNullOrWhiteSpace("filename");
             if (!FileExists(filename))
                 throw new FileNotFoundException("The file " + filename + " does not exist.");
-            return UTF8NoBOM.GetString(Files[filename]);
+            return DefaultEncoding.UTF8NoBOM.GetString(Files[filename]);
         }
 
         public string ReadAllText(string filename, Encoding encoding)
@@ -141,7 +141,7 @@ namespace Lithogen.Core.FileSystem
             CreateParentDirectory(filename);
             // Copy semantics of File.WriteAllText, UTF-8 with no BOM.
             // This is from dotPeek inspection.
-            Files[filename] = UTF8NoBOM.GetBytes(contents);
+            Files[filename] = DefaultEncoding.UTF8NoBOM.GetBytes(contents);
         }
 
         public void WriteAllText(string filename, string contents, Encoding encoding)
@@ -152,22 +152,6 @@ namespace Lithogen.Core.FileSystem
             CreateParentDirectory(filename);
             Files[filename] = encoding.GetBytes(contents);
         }
-
-        // Taken from dotPeek of StreamWriter.cs.
-        internal static Encoding UTF8NoBOM
-        {
-            get
-            {
-                if (_UTF8NoBOM == null)
-                {
-                    UTF8Encoding utf8Encoding = new UTF8Encoding(false, true);
-                    Thread.MemoryBarrier();
-                    _UTF8NoBOM = (Encoding)utf8Encoding;
-                }
-                return _UTF8NoBOM;
-            }
-        }
-        static volatile Encoding _UTF8NoBOM;
 
         bool FileIsDirectlyInDir(string filename, string directory)
         {

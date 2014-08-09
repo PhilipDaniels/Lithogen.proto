@@ -1,9 +1,7 @@
 ﻿using Lithogen.Interfaces.FileSystem;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Lithogen.Core.FileSystem
 {
@@ -27,72 +25,125 @@ namespace Lithogen.Core.FileSystem
 
         public bool DirectoryExists(string directory)
         {
-            throw new NotImplementedException();
+            return WrappedFileSystem.DirectoryExists(directory);
         }
 
         public void CreateDirectory(string directory)
         {
-            throw new NotImplementedException();
+            WrappedFileSystem.CreateDirectory(directory);
         }
 
         public void CreateParentDirectory(string filename)
         {
-            throw new NotImplementedException();
+            WrappedFileSystem.CreateParentDirectory(filename);
         }
 
         public void WriteAllBytes(string filename, byte[] bytes)
         {
-            throw new NotImplementedException();
+            WrappedFileSystem.WriteAllBytes(filename, bytes);
+            UpdateWriteStats(filename, bytes);
         }
 
         public byte[] ReadAllBytes(string filename)
         {
-            throw new NotImplementedException();
+            byte[] bytes = WrappedFileSystem.ReadAllBytes(filename);
+            UpdateReadStats(filename, bytes);
+            return bytes;
         }
 
         public void DeleteFile(string filename)
         {
-            throw new NotImplementedException();
+            WrappedFileSystem.DeleteFile(filename);
         }
 
         public void DeleteDirectory(string directory)
         {
-            throw new NotImplementedException();
+            WrappedFileSystem.DeleteDirectory(directory);
         }
 
         public IEnumerable<string> EnumerateFiles(string directory)
         {
-            throw new NotImplementedException();
+            return WrappedFileSystem.EnumerateFiles(directory);
         }
 
         public IEnumerable<string> EnumerateFiles(string directory, string searchPattern)
         {
-            throw new NotImplementedException();
+            return WrappedFileSystem.EnumerateFiles(directory, searchPattern);
         }
 
-        public IEnumerable<string> EnumerateFiles(string directory, string searchPattern, System.IO.SearchOption searchOption)
+        public IEnumerable<string> EnumerateFiles(string directory, string searchPattern, SearchOption searchOption)
         {
-            throw new NotImplementedException();
+            return WrappedFileSystem.EnumerateFiles(directory, searchPattern, searchOption);
         }
 
         public string ReadAllText(string filename)
         {
-            throw new NotImplementedException();
+            string result = WrappedFileSystem.ReadAllText(filename);
+            int byteCount = DefaultEncoding.UTF8NoBOM.GetByteCount(result);
+            UpdateReadStats(filename, byteCount);
+            return result;
         }
 
         public string ReadAllText(string filename, Encoding encoding)
         {
-            throw new NotImplementedException();
+            string result = WrappedFileSystem.ReadAllText(filename, encoding);
+            int byteCount = encoding.GetByteCount(result);
+            UpdateReadStats(filename, byteCount);
+            return result;
         }
 
         public void WriteAllText(string filename, string contents)
         {
-            throw new NotImplementedException();
+            WrappedFileSystem.WriteAllText(filename, contents);
+            int byteCount = DefaultEncoding.UTF8NoBOM.GetByteCount(contents);
+            UpdateWriteStats(filename, byteCount);
         }
 
         public void WriteAllText(string filename, string contents, Encoding encoding)
         {
-            throw new NotImplementedException();
+            WrappedFileSystem.WriteAllText(filename, contents, encoding);
+            int byteCount = encoding.GetByteCount(contents);
+            UpdateWriteStats(filename, byteCount);
+        }
+
+        void UpdateWriteStats(string filename, byte[] bytes)
+        {
+            UpdateWriteStats(filename, bytes.Length);
+        }
+
+        void UpdateWriteStats(string filename, int byteCount)
+        {
+            TotalStats.FilesWritten += 1;
+            TotalStats.BytesWritten += byteCount;
+            FileSystemStats stats = GetStatsForExtension(filename);
+            stats.FilesWritten += 1;
+            stats.BytesWritten += byteCount;
+        }
+
+        void UpdateReadStats(string filename, byte[] bytes)
+        {
+            UpdateReadStats(filename, bytes.Length);
+        }
+
+        void UpdateReadStats(string filename, int byteCount)
+        {
+            TotalStats.FilesRead += 1;
+            TotalStats.BytesRead += byteCount;
+            FileSystemStats stats = GetStatsForExtension(filename);
+            stats.FilesRead += 1;
+            stats.BytesRead += byteCount;
+        }
+
+        FileSystemStats GetStatsForExtension(string filename)
+        {
+            string extension = Path.GetExtension(filename);
+            FileSystemStats stats;
+            if (!StatsByExtension.TryGetValue(extension, out stats))
+            {
+                stats = new FileSystemStats();
+                StatsByExtension[extension] = stats;
+            }
+            return stats;
         }
     }
 }
