@@ -11,7 +11,8 @@ namespace Lithogen.Core.FileSystem
     {
         /// <summary>
         /// The default encoding to use for text file operations when the
-        /// caller does not specify an encoding.
+        /// caller does not specify an encoding. This is the same as used by the
+        /// .Net framework.
         /// </summary>
         public static readonly Encoding UTF8NoBOM = new UTF8Encoding(false, true);
 
