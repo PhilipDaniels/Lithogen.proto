@@ -126,7 +126,7 @@ namespace Lithogen.Core.Tests.Unit
         }
 
         [Test]
-        public virtual void ImagesDirectory_WhenProjectPathIsSetAndImagfesDirectoryIsNull_MatchesVisualStudioDefaultsAndIsLowerCase()
+        public virtual void ImagesDirectory_WhenProjectPathIsSetAndImagesDirectoryIsNull_MatchesLithogenDefaultsAndIsLowerCase()
         {
             TheContext.ProjectPath = T_ProjectPath;
             Assert.AreEqual(T_ImagesDirectory, TheContext.ImagesDirectory);

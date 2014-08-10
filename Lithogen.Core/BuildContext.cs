@@ -21,6 +21,11 @@ namespace Lithogen.Core
         public BuildContext()
         {
             TagData = new Dictionary<string, object>();
+            _CssDirectory = new ProjectDirectoryDerivedSubfolder(this, "css", "CssDirectory");
+            _ImagesDirectory = new ProjectDirectoryDerivedSubfolder(this, "img", "ImagesDirectory");
+            _ScriptsDirectory = new ProjectDirectoryDerivedSubfolder(this, "js", "ScriptsDirectory");
+            _ModelsDirectory = new ProjectDirectoryDerivedSubfolder(this, "models", "ModelsDirectory");
+            _ViewsDirectory = new ProjectDirectoryDerivedSubfolder(this, "views", "ViewsDirectory");
         }
 
         public string ProjectDirectory
@@ -46,97 +51,78 @@ namespace Lithogen.Core
 
         public string CssDirectory
         {
-            get
-            {
-                if (_CssDirectory != null)
-                    return _CssDirectory;
-                return Path.Combine(ProjectDirectory, "css");
-            }
-            set
-            {
-                if (value == null || value.Trim().Length > 0)
-                    _CssDirectory = value;
-                else
-                    throw new ArgumentException("CssDirectory cannot be set to an empty or whitespace string.");
-            }
+            get { return _CssDirectory.Value; }
+            set { _CssDirectory.Value = value; }
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string _CssDirectory;
+        ProjectDirectoryDerivedSubfolder _CssDirectory;
 
         public string ImagesDirectory
         {
-            get
-            {
-                if (_ImagesDirectory != null)
-                    return _ImagesDirectory;
-                return Path.Combine(ProjectDirectory, "img");
-            }
-            set
-            {
-                if (value == null || value.Trim().Length > 0)
-                    _ImagesDirectory = value;
-                else
-                    throw new ArgumentException("ImagesDirectory cannot be set to an empty or whitespace string.");
-            }
+            get { return _ImagesDirectory.Value; }
+            set { _ImagesDirectory.Value = value; }
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string _ImagesDirectory;
+        ProjectDirectoryDerivedSubfolder _ImagesDirectory;
 
         public string ScriptsDirectory
         {
-            get
-            {
-                if (_ScriptsDirectory != null)
-                    return _ScriptsDirectory;
-                return Path.Combine(ProjectDirectory, "js");
-            }
-            set
-            {
-                if (value == null || value.Trim().Length > 0)
-                    _ScriptsDirectory = value;
-                else
-                    throw new ArgumentException("ScriptsDirectory cannot be set to an empty or whitespace string.");
-            }
+            get { return _ScriptsDirectory.Value; }
+            set { _ScriptsDirectory.Value = value; }
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string _ScriptsDirectory;
+        ProjectDirectoryDerivedSubfolder _ScriptsDirectory;
 
         public string ModelsDirectory
         {
-            get
-            {
-                if (_ModelsDirectory != null)
-                    return _ModelsDirectory;
-                return Path.Combine(ProjectDirectory, "models");
-            }
-            set
-            {
-                if (value == null || value.Trim().Length > 0)
-                    _ModelsDirectory = value;
-                else
-                    throw new ArgumentException("ModelsDirectory cannot be set to an empty or whitespace string.");
-            }
+            get { return _ModelsDirectory.Value; }
+            set { _ModelsDirectory.Value = value; }
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string _ModelsDirectory;
+        ProjectDirectoryDerivedSubfolder _ModelsDirectory;
 
         public string ViewsDirectory
         {
-            get
-            {
-                if (_ViewsDirectory != null)
-                    return _ViewsDirectory;
-                return Path.Combine(ProjectDirectory, "views");
-            }
-            set
-            {
-                if (value == null || value.Trim().Length > 0)
-                    _ViewsDirectory = value;
-                else
-                    throw new ArgumentException("ViewsDirectory cannot be set to an empty or whitespace string.");
-            }
+            get { return _ViewsDirectory.Value; }
+            set { _ViewsDirectory.Value = value; }
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string _ViewsDirectory;
+        ProjectDirectoryDerivedSubfolder _ViewsDirectory;
+
+
+
+
+        class ProjectDirectoryDerivedSubfolder
+        {
+            readonly IBuildContext OwnerContext;
+            readonly string SubFolderName;
+            readonly string SubFolderDescription;
+
+            public ProjectDirectoryDerivedSubfolder(IBuildContext ownerContext, string subFolderName, string subFolderDescription)
+            {
+                OwnerContext = ownerContext.ThrowIfNull("ownerContext");
+                SubFolderName = subFolderName.ThrowIfNullOrWhiteSpace("subFolderName");
+                SubFolderDescription = subFolderDescription.ThrowIfNullOrWhiteSpace("subFolderDescription");
+            }
+
+            public string Value
+            {
+                get
+                {
+                    if (_Value != null)
+                        return _Value;
+                    return Path.Combine(OwnerContext.ProjectDirectory, SubFolderName);
+                }
+                set
+                {
+                    if (value == null || value.Trim().Length > 0)
+                        _Value = value;
+                    else
+                        throw new ArgumentException(SubFolderDescription + " cannot be set to an empty or whitespace string.");
+                }
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            string _Value;
+        }
     }
 }
