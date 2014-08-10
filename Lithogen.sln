@@ -17,8 +17,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0273EC05-3032-44B6-94F3-A8F37AB42B89}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
-		TESTING1.txt = TESTING1.txt
-		TESTING2.txt = TESTING2.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lithogen.Core.Tests.Unit", "Lithogen.Core.Tests.Unit\Lithogen.Core.Tests.Unit.csproj", "{40ED0135-256F-4BF6-9E4A-19A71F493B6F}"

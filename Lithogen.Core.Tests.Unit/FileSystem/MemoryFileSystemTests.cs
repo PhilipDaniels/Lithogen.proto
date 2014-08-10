@@ -2,7 +2,7 @@
 
 namespace Lithogen.Core.Tests.Unit.FileSystem
 {
-    public class MemoryFileSystemTests : IFileSystemTests<MemoryFileSystem>
-    {
-    }
+    //public class MemoryFileSystemTests : IFileSystemTests<MemoryFileSystem>
+    //{
+    //}
 }

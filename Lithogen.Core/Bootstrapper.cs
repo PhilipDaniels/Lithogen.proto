@@ -60,7 +60,7 @@ namespace Lithogen.Core
             return true;
         }
 
-        public bool InnerBootstrap(int outerDomainId)
+        bool InnerBootstrap(int outerDomainId)
         {
             Logger = new Logger(new TaskLoggingHelper(BuildEngine, "Lithogen.Core.Bootstrapper"));
             Logger.Prefix = "Lithogen.Core.Bootstrapper.InnerBootstrap() ";
@@ -109,6 +109,8 @@ namespace Lithogen.Core
 
         void ProveRazorMachineWorks(Logger logger)
         {
+            // Creating a machine is quick (about 0.1 seconds), rendering a simple
+            // template is comparatively slow (about 0.6 seconds).
             var rm = CreateRazorMachineWithoutContentProviders();
             ITemplate template = rm.ExecuteContent("Razor says: Hello @Model.FirstName @Model.LastName", new { FirstName = "John", LastName = "Smith" });
             logger.Msg(template.Result);
@@ -118,7 +120,6 @@ namespace Lithogen.Core
         {
             var rm = new RazorMachine(includeGeneratedSourceCode: includeGeneratedSourceCode, htmlEncode: htmlEncode, rootOperatorPath: rootOperatorPath);
             rm.Context.TemplateFactory.ContentManager.ClearAllContentProviders();
-            //rm.AssemblyLoadPath = ThisLocation;
             return rm;
         }
 

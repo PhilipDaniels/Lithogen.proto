@@ -61,8 +61,6 @@ Questions
 
 Design Notes
 ============
-LithogenVirtualFileSystem
-  LowerCasingFileSystem
 Tasks
   CleanUpOutput - remove DLLs, pdb and web.config
 
