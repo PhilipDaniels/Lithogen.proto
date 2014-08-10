@@ -1,4 +1,6 @@
-﻿using Lithogen.Interfaces;
+﻿using Lithogen.Core.FileSystem;
+using Lithogen.Interfaces;
+using Lithogen.Interfaces.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,11 +16,16 @@ namespace Lithogen.Core
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         readonly IBuildContext _BuildContext;
 
+        public IFileSystem FileSystem { get { return _FileSystem; } }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        readonly ICountingFileSystem _FileSystem;
+
         public IList<IBuildStep> Steps { get; private set; }
 
-        public Builder(IBuildContext buildContext)
+        public Builder(IBuildContext buildContext, ICountingFileSystem fileSystem)
         {
             _BuildContext = buildContext.ThrowIfNull("buildContext");
+            _FileSystem = fileSystem.ThrowIfNull("fileSystem");
             Steps = new List<IBuildStep>();
         }
 

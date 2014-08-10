@@ -1,5 +1,7 @@
 ﻿using AppDomainToolkit;
+using Lithogen.Core.FileSystem;
 using Lithogen.Interfaces;
+using Lithogen.Interfaces.FileSystem;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using System;
@@ -85,6 +87,9 @@ namespace Lithogen.Core
 
             container.Register<IBuildContext, BuildContext>();
             container.Register<IBuilder, Builder>();
+            container.Register<IFileSystem, WindowsFileSystem>();
+            container.Register<ICountingFileSystem, CountingFileSystem>();
+
             Logger.Msg("Default Lithogen types registered.");
 
             container.Verify();

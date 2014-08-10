@@ -1,4 +1,5 @@
-﻿using Lithogen.Interfaces;
+﻿using Lithogen.Core.FileSystem;
+using Lithogen.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
 using System;
@@ -7,20 +8,30 @@ namespace Lithogen.Core.Tests.Unit
 {
     public class BuilderTests
     {
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Ctor_WhenBuildContextIsNull_ThrowsArgumentNullException()
+        [SetUp]
+        public void Setup()
         {
-            var b = new Builder(null);
+            TheMockFS = Substitute.For<ICountingFileSystem>();
+            TheMockBuildContext = Substitute.For<IBuildContext>();
+        }
+        public ICountingFileSystem TheMockFS;
+        public IBuildContext TheMockBuildContext;
+
+        [Test]
+        public void Ctor_ArgumentsAreNull_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => new Builder(null, TheMockFS));
+            Assert.Throws<ArgumentNullException>(() => new Builder(TheMockBuildContext, null));
         }
 
         [Test]
-        public void Ctor_WhenCompleted_CreatesEmptyStepsCollection()
+        public void Ctor_WhenCompleted_CreatesEmptyStepsCollectionAndSetsContextAndFileSystem()
         {
-            var bc = Substitute.For<IBuildContext>();
-            var b = new Builder(bc);
-            Assert.NotNull(b.Steps);
-            Assert.IsEmpty(b.Steps);
+            var builder = new Builder(TheMockBuildContext, TheMockFS);
+            Assert.NotNull(builder.Steps);
+            Assert.IsEmpty(builder.Steps);
+            Assert.AreSame(TheMockBuildContext, builder.BuildContext);
+            Assert.AreSame(TheMockFS, builder.FileSystem);
         }
     }
 }

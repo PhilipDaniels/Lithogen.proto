@@ -38,11 +38,68 @@ namespace Lithogen.Core
                 if (value == null || value.Trim().Length > 0)
                     _ProjectDirectory = value;
                 else
-                    throw new ArgumentOutOfRangeException("ProjectDirectory cannot be set to an empty or whitespace string.");
+                    throw new ArgumentException("ProjectDirectory cannot be set to an empty or whitespace string.");
             }
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string _ProjectDirectory;
+
+        public string CssDirectory
+        {
+            get
+            {
+                if (_CssDirectory != null)
+                    return _CssDirectory;
+                return Path.Combine(ProjectDirectory, "css");
+            }
+            set
+            {
+                if (value == null || value.Trim().Length > 0)
+                    _CssDirectory = value;
+                else
+                    throw new ArgumentException("CssDirectory cannot be set to an empty or whitespace string.");
+            }
+        }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        string _CssDirectory;
+
+        public string ImagesDirectory
+        {
+            get
+            {
+                if (_ImagesDirectory != null)
+                    return _ImagesDirectory;
+                return Path.Combine(ProjectDirectory, "img");
+            }
+            set
+            {
+                if (value == null || value.Trim().Length > 0)
+                    _ImagesDirectory = value;
+                else
+                    throw new ArgumentException("ImagesDirectory cannot be set to an empty or whitespace string.");
+            }
+        }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        string _ImagesDirectory;
+
+        public string ScriptsDirectory
+        {
+            get
+            {
+                if (_ScriptsDirectory != null)
+                    return _ScriptsDirectory;
+                return Path.Combine(ProjectDirectory, "js");
+            }
+            set
+            {
+                if (value == null || value.Trim().Length > 0)
+                    _ScriptsDirectory = value;
+                else
+                    throw new ArgumentException("ScriptsDirectory cannot be set to an empty or whitespace string.");
+            }
+        }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        string _ScriptsDirectory;
 
         public string ModelsDirectory
         {
@@ -57,31 +114,12 @@ namespace Lithogen.Core
                 if (value == null || value.Trim().Length > 0)
                     _ModelsDirectory = value;
                 else
-                    throw new ArgumentOutOfRangeException("ModelsDirectory cannot be set to an empty or whitespace string.");
+                    throw new ArgumentException("ModelsDirectory cannot be set to an empty or whitespace string.");
             }
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string _ModelsDirectory;
 
-        public string ScriptsDirectory
-        {
-            get
-            {
-                if (_ScriptsDirectory != null)
-                    return _ScriptsDirectory;
-                return Path.Combine(ProjectDirectory, "scripts");
-            }
-            set
-            {
-                if (value == null || value.Trim().Length > 0)
-                    _ScriptsDirectory = value;
-                else
-                    throw new ArgumentOutOfRangeException("ScriptsDirectory cannot be set to an empty or whitespace string.");
-            }
-        }
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string _ScriptsDirectory;
-        
         public string ViewsDirectory
         {
             get
@@ -95,7 +133,7 @@ namespace Lithogen.Core
                 if (value == null || value.Trim().Length > 0)
                     _ViewsDirectory = value;
                 else
-                    throw new ArgumentOutOfRangeException("ViewsDirectory cannot be set to an empty or whitespace string.");
+                    throw new ArgumentException("ViewsDirectory cannot be set to an empty or whitespace string.");
             }
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

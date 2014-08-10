@@ -53,6 +53,7 @@
   <ItemGroup>
     <Content Include="apple-touch-icon-precomposed.png" />
     <Content Include="css\html5main.css" />
+    <Content Include="css\normalize.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="humans.txt" />
@@ -113,6 +114,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)Lithogen.TaskShim\Lithogen.TaskShim.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

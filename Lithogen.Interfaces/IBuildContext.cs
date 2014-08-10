@@ -56,25 +56,38 @@ namespace Lithogen.Interfaces
         string ProjectDirectory { get; set; }
 
         /// <summary>
-        /// If not explicitly set the ModelsDirectory is derived from the ProjectDirectory
-        /// according to Visual Studio ASP.Net MVC defaults.
+        /// If not explicitly set the CssDirectory is derived from the ProjectDirectory
+        /// and the directory name "css".
         /// It can also be explicitly set, in which case it is returned as-is.
         /// </summary>
-        string ModelsDirectory { get; set; }
+        string CssDirectory { get; set; }
+
+        /// <summary>
+        /// If not explicitly set the ImagesDirectory is derived from the ProjectDirectory
+        /// and the directory name "img".
+        /// It can also be explicitly set, in which case it is returned as-is.
+        /// </summary>
+        string ImagesDirectory { get; set; }
 
         /// <summary>
         /// If not explicitly set the ScriptDirectory is derived from the ProjectDirectory
-        /// according to Visual Studio ASP.Net MVC defaults.
+        /// and the directory name "js".
         /// It can also be explicitly set, in which case it is returned as-is.
         /// </summary>
         string ScriptsDirectory { get; set; }
 
         /// <summary>
+        /// If not explicitly set the ModelsDirectory is derived from the ProjectDirectory
+        /// and the directory name "models".
+        /// It can also be explicitly set, in which case it is returned as-is.
+        /// </summary>
+        string ModelsDirectory { get; set; }
+
+        /// <summary>
         /// If not explicitly set the ViewsDirectory is derived from the ProjectDirectory
-        /// according to Visual Studio ASP.Net MVC defaults.
+        /// and the directory name "views".
         /// It can also be explicitly set, in which case it is returned as-is.
         /// </summary>
         string ViewsDirectory { get; set; }
-
     }
 }
