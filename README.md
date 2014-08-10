@@ -17,6 +17,23 @@ Next Steps
 [ ] If ServiceStack looks good, use it to run HighlighjJS, otherwise I will
     probably need to port it.
 
+
+<Import Project="$(SolutionDir)Lithogen.TaskShim\Lithogen.TaskShim.targets" />
+
+MVC uses
+  /Content (for css)
+  /Images
+  /Models
+  /Scripts
+  /Views
+
+Service Stack Bundler uses
+  /bundler (installed here)
+  /Content    -
+  /Scripts    - as defined in bundler.cmd, easily changed
+
+
+
 Information
 ===========
 Principles
