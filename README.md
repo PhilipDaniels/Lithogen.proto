@@ -1,3 +1,11 @@
+NuGet Structure
+===============
+Lithogen - the core processing package
+Lithogen.Boilerplate - HTML5 boilerplate project
+Lithogen.Blog - blog example
+Lithogen.Samples - examples
+
+
 Next Steps
 ==========
 [ ] Get the RazorEngine working.
