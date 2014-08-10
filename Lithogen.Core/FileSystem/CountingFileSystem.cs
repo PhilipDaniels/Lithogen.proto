@@ -12,7 +12,21 @@ namespace Lithogen.Core.FileSystem
         /// <summary>
         /// A summary of all files/bytes that were read/written.
         /// </summary>
-        public FileSystemStats TotalStats { get; private set; }
+        public FileSystemStats TotalStats
+        {
+            get
+            {
+                var stats = new FileSystemStats();
+                foreach (var s in StatsByExtension.Values)
+                {
+                    stats.FilesRead += s.FilesRead;
+                    stats.FilesWritten += s.FilesWritten;
+                    stats.BytesRead += s.BytesRead;
+                    stats.BytesWritten += s.BytesWritten;
+                }
+                return stats;
+            }
+        }
 
         /// <summary>
         /// A breakdown by extension (which can be the empty string for files
@@ -23,7 +37,6 @@ namespace Lithogen.Core.FileSystem
         public CountingFileSystem(IFileSystem wrappedFileSystem)
         {
             WrappedFileSystem = wrappedFileSystem.ThrowIfNull("wrappedFileSystem");
-            TotalStats = new FileSystemStats();
             StatsByExtension = new Dictionary<string, FileSystemStats>();
         }
 
@@ -212,8 +225,6 @@ namespace Lithogen.Core.FileSystem
 
         void UpdateWriteStats(string filename, int byteCount)
         {
-            TotalStats.FilesWritten += 1;
-            TotalStats.BytesWritten += byteCount;
             FileSystemStats stats = GetStatsForExtension(filename);
             stats.FilesWritten += 1;
             stats.BytesWritten += byteCount;
@@ -226,8 +237,6 @@ namespace Lithogen.Core.FileSystem
 
         void UpdateReadStats(string filename, int byteCount)
         {
-            TotalStats.FilesRead += 1;
-            TotalStats.BytesRead += byteCount;
             FileSystemStats stats = GetStatsForExtension(filename);
             stats.FilesRead += 1;
             stats.BytesRead += byteCount;
