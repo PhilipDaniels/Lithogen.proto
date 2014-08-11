@@ -1,6 +1,8 @@
 ﻿using Lithogen.Core.FileSystem;
 using Lithogen.Interfaces;
 using Lithogen.Interfaces.FileSystem;
+using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,22 +20,37 @@ namespace Lithogen.Core
 
         public IFileSystem FileSystem { get { return _FileSystem; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        readonly ICountingFileSystem _FileSystem;
+        readonly IFileSystem _FileSystem;
+
+        readonly Logger Logger;
 
         public IList<IBuildStep> Steps { get; private set; }
 
-        public Builder(IBuildContext buildContext, ICountingFileSystem fileSystem)
+        public Builder(IBuildContext buildContext, IFileSystem fileSystem)
         {
             _BuildContext = buildContext.ThrowIfNull("buildContext");
             _FileSystem = fileSystem.ThrowIfNull("fileSystem");
             Steps = new List<IBuildStep>();
+            Logger = new Logger(new TaskLoggingHelper(_BuildContext.BuildEngine, "Builder"));
+            Logger.Importance = MessageImportance.High;
         }
 
         public bool Build()
         {
-            //var logger = BuildContext.MakeLogger("Builder");
-            //logger.Msg("The Builder is beginning its execution.");
-            //logger.LogIndent++;
+            Logger.Msg("Builder.Build() starting.");
+            Logger.Indentation += 1;
+
+            // Process css and js assets
+            // Copy images
+            // Copy various files from the root of the website
+            // Find the layouts and load them into a RazorBuilder
+            // Proces the views
+
+            Logger.Msg("Builder.Build() completed.");
+
+
+
+
 
             //int stepNum = 1;
             //foreach (var step in Steps)

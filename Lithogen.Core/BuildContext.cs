@@ -7,6 +7,7 @@ using System.IO;
 
 namespace Lithogen.Core
 {
+    [Serializable]
     public class BuildContext : IBuildContext
     {
         public string SolutionPath { get; set; }
@@ -88,8 +89,6 @@ namespace Lithogen.Core
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         ProjectDirectoryDerivedSubfolder _ViewsDirectory;
-
-
 
 
         class ProjectDirectoryDerivedSubfolder
