@@ -5,8 +5,8 @@
 
   <Target Name="RunLithogen">
     <LithogenShim SolutionPath="$(SolutionPath)" ProjectPath="$(ProjectPath)" Configuration="$(Configuration)"
-          LithogenCoreFile="$(SolutionDir)Lithogen.Core\bin\$(Configuration)\Lithogen.Core.dll"
-          LithogenPluginDir="$(SolutionDir)Lithogen.Core\bin\$(Configuration)\Plugins" MessageImportance="High"    />
+                  LithogenExeFile="$(SolutionDir)Lithogen\bin\$(Configuration)\Lithogen.exe"
+                  MessageImportance="High" />
   </Target>
 
   <PropertyGroup>

@@ -1,23 +1,15 @@
 ﻿using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using System;
+using System.Diagnostics;
 using System.IO;
-using System.Reflection;
-using System.Threading;
 
 namespace Lithogen.TaskShim
 {
     /// <summary>
     /// This Shim is loaded by Visual Studio when a build is started and then never unloaded until you
     /// close Visual Studio. Therefore, it has to be a simple DLL that defers all the work onto the
-    /// Lithogen.Core.dll (which we can replace during compile time). That DLL in turn, is called
-    /// to Bootstrap the build - the Bootstrap will dynamically load custom builders, etc.
-    /// before it begins executing the build.
-    /// <remarks>
-    /// In order the really ensure things stay uncoupled from the core we invoke the Bootstrap()
-    /// method by reflection rather than taking a dependency on an IBootstrap interface. This is
-    /// slightly clunky but this code is never going to change.
-    /// </remarks>
+    /// Lithogen subprocess.
     /// </summary>
     [Serializable]
     public class LithogenShim : AppDomainIsolatedTask
@@ -44,74 +36,53 @@ namespace Lithogen.TaskShim
         /// The full path of the Lithogen.Core.dll file.
         /// </summary>
         [Required]
-        public string LithogenCoreFile { get; set; }
-
-        /// <summary>
-        /// The path for Lithogen plugings. This is optional, Lithogen.Core can do
-        /// a build without any extra help.
-        /// </summary>
-        public string LithogenPluginDir { get; set; }
+        public string LithogenExeFile { get; set; }
 
         /// <summary>
         /// The importance of messages logged by the build. Defaults to HIGH (chatty).
         /// </summary>
         public string MessageImportance { get; set; }
+        MessageImportance _MessageImportance;
 
         const string MsgPrefix = "Lithogen.TaskShim.LithogenShim.Execute() ";
 
         public override bool Execute()
         {
             DateTime start = DateTime.Now;
-            MessageImportance msgImp = ValidateMessageImportance();
-            Log.LogMessage(msgImp, MsgPrefix + "Starting. This AppDomain.Id is {0} and FriendlyName is '{1}'.", AppDomain.CurrentDomain.Id, AppDomain.CurrentDomain.FriendlyName);
-            Log.LogMessage(msgImp, MsgPrefix + "The AppDomain.CurrentDomain.BaseDirectory is {0}.", AppDomain.CurrentDomain.BaseDirectory);
-            Log.LogMessage(msgImp, MsgPrefix + "The Thread.CurrentThread.ManagedThreadId is {0}.", Thread.CurrentThread.ManagedThreadId);
-            ValidateLithogenCoreFile();
+            _MessageImportance = ValidateMessageImportance();
+            ValidateLithogenExeFile();
 
-            Log.LogMessage(msgImp, MsgPrefix + "Attempting to load LithogenCoreFile from {0}.", LithogenCoreFile);
-            Assembly coreAssembly = Assembly.LoadFrom(LithogenCoreFile);
-            if (coreAssembly == null)
-                throw new Exception("Could not load LithogenCoreFile from " + LithogenCoreFile);
-            Log.LogMessage(msgImp, MsgPrefix + "LithogenCoreFile loaded successfully.");
-
-            object bootstrapper = coreAssembly.CreateInstance("Lithogen.Core.Bootstrapper", true);
-            if (bootstrapper == null)
-                throw new Exception("Could not create Lithogen.Core.Bootstrapper object.");
-            Log.LogMessage(msgImp, MsgPrefix + "Lithogen.Core.Bootstrapper object created successfully.");
-
-            Type bootstrapperType = bootstrapper.GetType();
-            SetProperty(msgImp, bootstrapper, bootstrapperType, "BuildEngine", BuildEngine);
-            SetProperty(msgImp, bootstrapper, bootstrapperType, "HostObject", HostObject);
-            SetProperty(msgImp, bootstrapper, bootstrapperType, "SolutionPath", SolutionPath);
-            SetProperty(msgImp, bootstrapper, bootstrapperType, "ProjectPath", ProjectPath);
-            SetProperty(msgImp, bootstrapper, bootstrapperType, "Configuration", Configuration);
-            SetProperty(msgImp, bootstrapper, bootstrapperType, "LithogenPluginDir", LithogenPluginDir);
-            SetProperty(msgImp, bootstrapper, bootstrapperType, "MessageImportance", msgImp);     // Note, this is a enum now.
-
-            MethodInfo exec = bootstrapperType.GetMethod("Bootstrap");
-            if (exec == null)
-                throw new Exception("Could not get hold of the Bootstrap() method from the Bootstrapper object.");
-            Log.LogMessage(msgImp, MsgPrefix + "About to invoke the Bootstrap() method.");
-            bool result = (bool)exec.Invoke(bootstrapper, null);
-            double timeTaken = (DateTime.Now - start).TotalSeconds;
-            if (!result)
+            // Run Lithogen.exe as a separate process. All messages, including error messages,
+            // will be received on standard output. It is the format of the message that
+            // defines it as an error.
+            using (var p = new Process())
             {
-                Log.LogError(MsgPrefix + "failed ({0:0.00} seconds).", timeTaken);
-            }
-            else
-            {
-                Log.LogMessage(msgImp, MsgPrefix + "completed OK ({0:0.00} seconds).", timeTaken);
+                p.StartInfo.FileName = LithogenExeFile;
+                p.StartInfo.WorkingDirectory = Path.GetDirectoryName(LithogenExeFile);
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.OutputDataReceived += p_OutputDataReceived;
+
+                Log.LogMessage(_MessageImportance, MsgPrefix + "Attempting to start {0}.", LithogenExeFile);
+
+                p.Start();
+                p.BeginOutputReadLine();
+                p.WaitForExit();
             }
 
-            return result;
+            return true;
         }
 
-        void SetProperty(MessageImportance imp, object bootstrapper, Type bootstrapperType, string property, object value)
+        /// <summary>
+        /// This is executed when the child process writes a line to standard output.
+        /// </summary>
+        void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            PropertyInfo prop = bootstrapperType.GetProperty(property);
-            MethodInfo setter = prop.GetSetMethod();
-            setter.Invoke(bootstrapper, new object[] { value });
-            Log.LogMessage(imp, MsgPrefix + "Set Bootstrapper.{0} to {1}.", property, value);
+            if (String.IsNullOrWhiteSpace(e.Data))
+                return;
+            Log.LogMessage(_MessageImportance, e.Data);
+            Log.
         }
 
         MessageImportance ValidateMessageImportance()
@@ -135,13 +106,13 @@ namespace Lithogen.TaskShim
             }
         }
 
-        void ValidateLithogenCoreFile()
+        void ValidateLithogenExeFile()
         {
-            if (String.IsNullOrWhiteSpace(LithogenCoreFile))
-                throw new ArgumentOutOfRangeException("LithogenCoreFile must be set. Without it we cannot Bootstrap the build.");
-            LithogenCoreFile = LithogenCoreFile.Trim();
-            if (!File.Exists(LithogenCoreFile))
-                throw new FileNotFoundException("The LithogenCoreFile '" + LithogenCoreFile + "' does not exist. Without it we cannot Bootstrap the build.");
+            if (String.IsNullOrWhiteSpace(LithogenExeFile))
+                throw new ArgumentNullException("LithogenExeFile must be set. Without it we cannot run the build.");
+            LithogenExeFile = LithogenExeFile.Trim();
+            if (!File.Exists(LithogenExeFile))
+                throw new FileNotFoundException("The LithogenExeFile '" + LithogenExeFile + "' does not exist. Without it we cannot run the build.");
         }
     }
 }
