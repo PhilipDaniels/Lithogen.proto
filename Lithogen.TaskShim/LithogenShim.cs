@@ -3,6 +3,7 @@ using Microsoft.Build.Utilities;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace Lithogen.TaskShim
 {
@@ -12,7 +13,7 @@ namespace Lithogen.TaskShim
     /// Lithogen subprocess.
     /// </summary>
     [Serializable]
-    public class LithogenShim : AppDomainIsolatedTask
+    public class LithogenShim : Task
     {
         /// <summary>
         /// The full path of the solution file. This will not be set if you run MSBuild
@@ -52,6 +53,10 @@ namespace Lithogen.TaskShim
             _MessageImportance = ValidateMessageImportance();
             ValidateLithogenExeFile();
 
+            Log.LogMessage(_MessageImportance, MsgPrefix + "First");
+            Thread.Sleep(2000);
+            Log.LogMessage(_MessageImportance, MsgPrefix + "Second");
+
             // Run Lithogen.exe as a separate process. All messages, including error messages,
             // will be received on standard output. It is the format of the message that
             // defines it as an error.
@@ -82,7 +87,6 @@ namespace Lithogen.TaskShim
             if (String.IsNullOrWhiteSpace(e.Data))
                 return;
             Log.LogMessage(_MessageImportance, e.Data);
-            Log.
         }
 
         MessageImportance ValidateMessageImportance()

@@ -17,14 +17,7 @@ namespace Lithogen
             Logger.Prefix = "Main() ";
 
             Logger.Msg("Starting.");
-            Thread.Sleep(3000);
-            Console.Out.Flush();
-            Logger.Msg("Starting.");
-            Thread.Sleep(3000);
-            Console.Out.Flush();
-            Logger.Msg("Starting.");
-            Thread.Sleep(3000);
-            Console.Out.Flush();
+            Thread.Sleep(5000);
             Logger.Msg("Done.");
         }
     }
