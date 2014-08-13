@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\IFileSystem.cs" />
-    <Compile Include="IBuildContext.cs" />
     <Compile Include="IBuilder.cs" />
     <Compile Include="IBuildStep.cs" />
   </ItemGroup>

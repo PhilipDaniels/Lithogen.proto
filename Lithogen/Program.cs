@@ -19,11 +19,12 @@ namespace Lithogen
                 Logger = new Logger("Main() ");
                 Logger.Msg("Starting. Parsing configuration.");
                 var argsDict = ProcessArgs(args);
-                Settings = ParseAndValidationSettings(argsDict);
+                Settings = LoadSettings(argsDict);
+                Settings.Validate(Logger);
                 DumpConfig(Settings);
                 if (Settings == null)
                     return;
-
+                ConfigureIoC();
                 Logger.Msg("Done.");
             }
             catch (Exception ex)
@@ -32,7 +33,58 @@ namespace Lithogen
             }
         }
 
-        static Settings ParseAndValidationSettings(IDictionary<string, string> args)
+        static void ConfigureIoC()
+        {
+            //var container = new SimpleInjector.Container();
+            //container.Options.AllowOverridingRegistrations = true;
+            //Logger.Msg("IoC container created.");
+
+            //container.Register<IBuildContext, BuildContext>();
+            //container.Register<IBuilder, Builder>();
+            //container.Register<IFileSystem, WindowsFileSystem>();
+            //container.Register<ICountingFileSystem, CountingFileSystem>();
+
+            //Logger.Msg("Default Lithogen types registered.");
+
+            //container.Verify();
+            //Logger.Msg("IoC container verified.");
+
+            //var bc = container.GetInstance<IBuildContext>();
+            //bc.SolutionPath = SolutionPath;
+            //bc.ProjectPath = ProjectPath;
+            //bc.Configuration = Configuration;
+            //bc.MessageImportance = MessageImportance;
+            //bc.BuildEngine = BuildEngine;
+            //bc.HostObject = HostObject;
+            //Logger.Msg("IBuildContext of type {0} created and configured.", bc.GetType());
+
+            //var builder = container.GetInstance<IBuilder>();
+            //Logger.Msg("IBuilder of type {0} created.", builder.GetType());
+            //builder.Build();
+        }
+
+        //void ProveRazorMachineWorks(Logger logger)
+        //{
+        //    // Creating a machine is quick (about 0.1 seconds), rendering a simple
+        //    // template is comparatively slow (about 0.6 seconds).
+        //    var rm = CreateRazorMachineWithoutContentProviders();
+        //    ITemplate template = rm.ExecuteContent("Razor says: Hello @Model.FirstName @Model.LastName", new { FirstName = "John", LastName = "Smith" });
+        //    logger.Msg(template.Result);
+        //}
+
+        //RazorMachine CreateRazorMachineWithoutContentProviders(bool includeGeneratedSourceCode = false, string rootOperatorPath = null, bool htmlEncode = true)
+        //{
+        //    var rm = new RazorMachine(includeGeneratedSourceCode: includeGeneratedSourceCode, htmlEncode: htmlEncode, rootOperatorPath: rootOperatorPath);
+        //    rm.Context.TemplateFactory.ContentManager.ClearAllContentProviders();
+        //    return rm;
+        //}
+
+
+        /// <summary>
+        /// Loads the settings for this invocation, from the config files
+        /// and/or the command line.
+        /// </summary>
+        static Settings LoadSettings(IDictionary<string, string> args)
         {
             Settings settings = null;
 
@@ -80,6 +132,7 @@ namespace Lithogen
 
             return settings;
         }
+
 
         static Settings LoadConfigFile(string configFile)
         {

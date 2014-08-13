@@ -9,7 +9,6 @@ namespace Lithogen.Core.BuildSteps
     public class RazorSiteBuildStep
     {
         public string Name { get; set; }
-        Logger Logger { get; set; }
 
         public RazorSiteBuildStep()
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using Lithogen.Core;
 
 namespace Lithogen
 {
@@ -121,6 +122,58 @@ namespace Lithogen
             }
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             string _Value;
+        }
+
+        public void Validate(Logger logger)
+        {
+            if (SolutionFile != null)
+            {
+                SolutionFile = SolutionFile.Trim();
+                if (SolutionFile.Length == 0)
+                {
+                    SolutionFile = null;
+                }
+                if (SolutionFile != null && !File.Exists(SolutionFile))
+                    throw new FileNotFoundException("The SolutionFile '" + SolutionFile + "' does not exist.");
+            }
+
+            if (String.IsNullOrWhiteSpace(ProjectFile))
+                throw new ArgumentException("ProjectFile must be set.");
+            ProjectFile = ProjectFile.Trim();
+            if (!File.Exists(ProjectFile))
+                throw new FileNotFoundException("The ProjectFile '" + ProjectFile + "' does not exist.");
+
+            if (Configuration != null)
+                Configuration = Configuration.Trim();
+
+            if (PluginsDirectory != null)
+            {
+                PluginsDirectory = PluginsDirectory.Trim();
+                if (PluginsDirectory.Length == 0)
+                {
+                    PluginsDirectory = null;
+                }
+                if (PluginsDirectory != null)
+                {
+                    if (!Directory.Exists(PluginsDirectory))
+                    {
+                        logger.Msg("The PluginsDirectory '{0}' that you specified does not exist - ignoring.", PluginsDirectory);
+                        PluginsDirectory = null;
+                    }
+                    else
+                    {
+                        string[] files = Directory.GetFiles(PluginsDirectory, "*.dll", SearchOption.TopDirectoryOnly);
+                        if (files == null || files.Length == 0)
+                        {
+                            logger.Msg("The PluginsDirectory '{0}' exists, but contains no DLLs. Only built-in Lithogen types will be used.", PluginsDirectory);
+                        }
+                        else
+                        {
+                            logger.Msg("The PluginsDirectory '{0}' exists and contains {1} file(s) matching the filter *.dll. They will be searched for plugin types later.", PluginsDirectory, files.Length);
+                        }
+                    }
+                }
+            }
         }
     }
 }

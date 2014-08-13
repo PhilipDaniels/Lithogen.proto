@@ -14,31 +14,22 @@ namespace Lithogen.Core
 {
     public class Builder : IBuilder
     {
-        public IBuildContext BuildContext { get { return _BuildContext; } }
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        readonly IBuildContext _BuildContext;
-
         public IFileSystem FileSystem { get { return _FileSystem; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         readonly IFileSystem _FileSystem;
 
-        readonly Logger Logger;
-
         public IList<IBuildStep> Steps { get; private set; }
 
-        public Builder(IBuildContext buildContext, IFileSystem fileSystem)
+        public Builder(IFileSystem fileSystem)
         {
-            _BuildContext = buildContext.ThrowIfNull("buildContext");
             _FileSystem = fileSystem.ThrowIfNull("fileSystem");
             Steps = new List<IBuildStep>();
-            Logger = new Logger(new TaskLoggingHelper(_BuildContext.BuildEngine, "Builder"));
-            Logger.Importance = MessageImportance.High;
         }
 
         public bool Build()
         {
-            Logger.Msg("Builder.Build() starting.");
-            Logger.Indentation += 1;
+            //Logger.Msg("Builder.Build() starting.");
+            //Logger.Indentation += 1;
 
             // Process css and js assets
             // Copy images
@@ -46,7 +37,7 @@ namespace Lithogen.Core
             // Find the layouts and load them into a RazorBuilder
             // Proces the views
 
-            Logger.Msg("Builder.Build() completed.");
+            //Logger.Msg("Builder.Build() completed.");
 
 
 
