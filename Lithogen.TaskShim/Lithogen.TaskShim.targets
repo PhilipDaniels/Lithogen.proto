@@ -4,9 +4,9 @@
   </UsingTask>
 
   <Target Name="RunLithogen">
-    <LithogenShim SolutionPath="$(SolutionPath)" ProjectPath="$(ProjectPath)" Configuration="$(Configuration)"
-                  LithogenExeFile="$(SolutionDir)Lithogen\bin\$(Configuration)\Lithogen.exe"
-                  MessageImportance="High" />
+    <LithogenShim LithogenExeFile="$(SolutionDir)Lithogen\bin\$(Configuration)\Lithogen.exe" MessageImportance="High"
+                  ConfigurationFile="" SolutionFile="$(SolutionPath)" ProjectFile="$(ProjectPath)" Configuration="$(Configuration)"
+                  CssDirectory="" ImagesDirectory="" ScriptsDirectory="" ModelsDirectory="" ViewsDirectory="" />
   </Target>
 
   <PropertyGroup>

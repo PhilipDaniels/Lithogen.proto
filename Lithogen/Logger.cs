@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lithogen
 {
@@ -19,9 +15,15 @@ namespace Lithogen
         DateTime LastTime;
 
         public Logger()
+            : this(null)
+        {
+        }
+
+        public Logger(string prefix)
         {
             StartTime = DateTime.Now;
             LastTime = StartTime;
+            Prefix = prefix;
         }
 
         /// <summary>
@@ -42,7 +44,7 @@ namespace Lithogen
             Console.Write(" : error ");
             Console.Write(code);
             Console.Write(" ");
-            msg = FormatMessage(msg);
+            msg = String.Format(msg, args);
             WriteLine(msg);
         }
 
@@ -67,7 +69,7 @@ namespace Lithogen
         void WriteLine(string msg)
         {
             Console.WriteLine(msg);
-            Console.Out.Flush();
+            //Console.Out.Flush();
         }
     }
 }

@@ -114,9 +114,8 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)Lithogen.TaskShim\Lithogen.TaskShim.targets" />
   <Target Name="BeforeBuild">
-    <Exec Command="$(SolutionDir)Lithogen\bin\$(Configuration)\Lithogen.exe"/>
-    <MSBuild Projects="$(SolutionDir)Lithogen\bin\$(Configuration)\Lithogen.newproj"
   </Target>
 
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
