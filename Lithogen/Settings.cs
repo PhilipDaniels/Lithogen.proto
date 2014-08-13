@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Lithogen.Core;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using Lithogen.Core;
 
 namespace Lithogen
 {
@@ -136,6 +136,10 @@ namespace Lithogen
                 if (SolutionFile != null && !File.Exists(SolutionFile))
                     throw new FileNotFoundException("The SolutionFile '" + SolutionFile + "' does not exist.");
             }
+            else
+            {
+                logger.Msg("SolutionFile is not specified (which is probably OK, you should base things off the project anyway).");
+            }
 
             if (String.IsNullOrWhiteSpace(ProjectFile))
                 throw new ArgumentException("ProjectFile must be set.");
@@ -173,6 +177,10 @@ namespace Lithogen
                         }
                     }
                 }
+            }
+            else
+            {
+                logger.Msg("The PluginsDirectory is not specified, only built-in Lithogen types will be used.");
             }
         }
     }

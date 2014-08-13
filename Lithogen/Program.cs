@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Lithogen.Core;
+using Lithogen.Core.FileSystem;
+using Lithogen.Interfaces;
+using Lithogen.Interfaces.FileSystem;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -24,7 +28,10 @@ namespace Lithogen
                 DumpConfig(Settings);
                 if (Settings == null)
                     return;
-                ConfigureIoC();
+                var container = ConfigureIoC();
+                var builder = container.GetInstance<IBuilder>();
+                Logger.Msg("IBuilder of type {0} created.", builder.GetType());
+                builder.Build();
                 Logger.Msg("Done.");
             }
             catch (Exception ex)
@@ -33,34 +40,20 @@ namespace Lithogen
             }
         }
 
-        static void ConfigureIoC()
+        static SimpleInjector.Container ConfigureIoC()
         {
-            //var container = new SimpleInjector.Container();
-            //container.Options.AllowOverridingRegistrations = true;
-            //Logger.Msg("IoC container created.");
+            var container = new SimpleInjector.Container();
+            container.Options.AllowOverridingRegistrations = true;
+            Logger.Msg("IoC container created.");
 
-            //container.Register<IBuildContext, BuildContext>();
-            //container.Register<IBuilder, Builder>();
-            //container.Register<IFileSystem, WindowsFileSystem>();
-            //container.Register<ICountingFileSystem, CountingFileSystem>();
+            container.Register<IBuilder, Builder>();
+            container.Register<IFileSystem, WindowsFileSystem>();
+            container.Register<ICountingFileSystem, CountingFileSystem>();
+            Logger.Msg("Default Lithogen types registered.");
 
-            //Logger.Msg("Default Lithogen types registered.");
-
-            //container.Verify();
-            //Logger.Msg("IoC container verified.");
-
-            //var bc = container.GetInstance<IBuildContext>();
-            //bc.SolutionPath = SolutionPath;
-            //bc.ProjectPath = ProjectPath;
-            //bc.Configuration = Configuration;
-            //bc.MessageImportance = MessageImportance;
-            //bc.BuildEngine = BuildEngine;
-            //bc.HostObject = HostObject;
-            //Logger.Msg("IBuildContext of type {0} created and configured.", bc.GetType());
-
-            //var builder = container.GetInstance<IBuilder>();
-            //Logger.Msg("IBuilder of type {0} created.", builder.GetType());
-            //builder.Build();
+            container.Verify();
+            Logger.Msg("IoC container verified.");
+            return container;
         }
 
         //void ProveRazorMachineWorks(Logger logger)
@@ -132,7 +125,6 @@ namespace Lithogen
 
             return settings;
         }
-
 
         static Settings LoadConfigFile(string configFile)
         {
