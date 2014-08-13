@@ -55,18 +55,17 @@
     <Compile Include="FileSystem\DefaultEncoding.cs" />
     <Compile Include="FileSystem\FileSystemStats.cs" />
     <Compile Include="FileSystem\ICountingFileSystem.cs" />
+    <Compile Include="FileSystem\IFileSystem.cs" />
     <Compile Include="FileSystem\LowerCasingFileSystem.cs" />
     <Compile Include="FileSystem\MemoryFileSystem.cs" />
     <Compile Include="FileSystem\WindowsFileSystem.cs" />
+    <Compile Include="IBuilder.cs" />
+    <Compile Include="IBuildStep.cs" />
     <Compile Include="LithogenTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lithogen.Interfaces\Lithogen.Interfaces.csproj">
-      <Project>{bcb0202c-0b91-49ff-bc06-9d4ed6912170}</Project>
-      <Name>Lithogen.Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xipton.Razor\Xipton.Razor.csproj">
       <Project>{3a7a2f2f-0b57-47f9-8e1a-d34ecb961831}</Project>
       <Name>Xipton.Razor</Name>

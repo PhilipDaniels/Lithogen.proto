@@ -1,7 +1,7 @@
-﻿using Lithogen.Interfaces.FileSystem;
+﻿using Lithogen.Core.FileSystem;
 using System.Collections.Generic;
 
-namespace Lithogen.Interfaces
+namespace Lithogen.Core
 {
     public interface IBuilder
     {

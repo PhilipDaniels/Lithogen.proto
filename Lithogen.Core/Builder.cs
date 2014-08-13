@@ -1,6 +1,4 @@
 ﻿using Lithogen.Core.FileSystem;
-using Lithogen.Interfaces;
-using Lithogen.Interfaces.FileSystem;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using System;

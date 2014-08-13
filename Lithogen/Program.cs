@@ -1,7 +1,5 @@
 ﻿using Lithogen.Core;
 using Lithogen.Core.FileSystem;
-using Lithogen.Interfaces;
-using Lithogen.Interfaces.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

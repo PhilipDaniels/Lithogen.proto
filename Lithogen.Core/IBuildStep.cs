@@ -1,5 +1,5 @@
 ﻿
-namespace Lithogen.Interfaces
+namespace Lithogen.Core
 {
     public interface IBuildStep
     {

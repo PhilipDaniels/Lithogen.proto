@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace Lithogen.Interfaces.FileSystem
+namespace Lithogen.Core.FileSystem
 {
     /// <summary>
     /// Defines the basic operations that a Lithogen file system must support.

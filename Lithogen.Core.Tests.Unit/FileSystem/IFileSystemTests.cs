@@ -1,5 +1,4 @@
 ﻿using Lithogen.Core.FileSystem;
-using Lithogen.Interfaces.FileSystem;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

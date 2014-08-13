@@ -80,10 +80,6 @@
       <Project>{a6e1067a-edb4-406a-91ab-028fbc867d57}</Project>
       <Name>Lithogen.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Lithogen.Interfaces\Lithogen.Interfaces.csproj">
-      <Project>{bcb0202c-0b91-49ff-bc06-9d4ed6912170}</Project>
-      <Name>Lithogen.Interfaces</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
