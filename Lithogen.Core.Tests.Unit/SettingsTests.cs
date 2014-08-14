@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 
-namespace Lithogen.Tests.Unit
+namespace Lithogen.Core.Tests.Unit
 {
     public class SettingsTests
     {

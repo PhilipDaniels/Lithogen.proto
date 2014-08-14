@@ -12,14 +12,14 @@ namespace Lithogen
     {
         public static readonly string NAME = "Lithogen";
         public static Settings Settings; 
-        static Logger Logger;
+        static ILogger Logger;
 
         static void Main(string[] args)
         {
             try
             {
-                Logger = new Logger("Main() ");
-                Logger.Msg("Starting. Parsing configuration.");
+                Logger = new ConsoleLogger() { Prefix = "Main() " };
+                Logger.Msg("Starting. Parsing settings.");
                 var argsDict = ProcessArgs(args);
                 Settings = LoadSettings(argsDict);
                 Settings.Validate(Logger);
@@ -44,32 +44,17 @@ namespace Lithogen
             container.Options.AllowOverridingRegistrations = true;
             Logger.Msg("IoC container created.");
 
+            container.Register<ILogger, ConsoleLogger>();
             container.Register<IBuilder, Builder>();
             container.Register<IFileSystem, WindowsFileSystem>();
             container.Register<ICountingFileSystem, CountingFileSystem>();
+            container.RegisterSingle<Settings>(Settings);
             Logger.Msg("Default Lithogen types registered.");
 
             container.Verify();
             Logger.Msg("IoC container verified.");
             return container;
         }
-
-        //void ProveRazorMachineWorks(Logger logger)
-        //{
-        //    // Creating a machine is quick (about 0.1 seconds), rendering a simple
-        //    // template is comparatively slow (about 0.6 seconds).
-        //    var rm = CreateRazorMachineWithoutContentProviders();
-        //    ITemplate template = rm.ExecuteContent("Razor says: Hello @Model.FirstName @Model.LastName", new { FirstName = "John", LastName = "Smith" });
-        //    logger.Msg(template.Result);
-        //}
-
-        //RazorMachine CreateRazorMachineWithoutContentProviders(bool includeGeneratedSourceCode = false, string rootOperatorPath = null, bool htmlEncode = true)
-        //{
-        //    var rm = new RazorMachine(includeGeneratedSourceCode: includeGeneratedSourceCode, htmlEncode: htmlEncode, rootOperatorPath: rootOperatorPath);
-        //    rm.Context.TemplateFactory.ContentManager.ClearAllContentProviders();
-        //    return rm;
-        //}
-
 
         /// <summary>
         /// Loads the settings for this invocation, from the config files
@@ -119,6 +104,13 @@ namespace Lithogen
                     settings.ModelsDirectory = kvp.Value;
                 else if (k == "vw")
                     settings.ViewsDirectory = kvp.Value;
+            }
+
+            if (settings.PluginsDirectory == null)
+            {
+                string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                settings.PluginsDirectory = Path.Combine(dir, "Plugins");
+                Logger.Msg("The PluginsDirectory was not explicitly set (or set to 'none'), so assuming the default of " + settings.PluginsDirectory);
             }
 
             return settings;

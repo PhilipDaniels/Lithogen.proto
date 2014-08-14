@@ -1,10 +1,9 @@
-﻿using Lithogen.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Lithogen
+namespace Lithogen.Core
 {
     /// <summary>
     /// Represents the settings that this invocation of Lithogen is working with.
@@ -124,7 +123,7 @@ namespace Lithogen
             string _Value;
         }
 
-        public void Validate(Logger logger)
+        public void Validate(ILogger logger)
         {
             if (SolutionFile != null)
             {

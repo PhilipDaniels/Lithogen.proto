@@ -50,7 +50,10 @@
   <ItemGroup>
     <Compile Include="ArgumentValidators.cs" />
     <Compile Include="Builder.cs" />
-    <Compile Include="BuildSteps\RazorSiteBuildStep.cs" />
+    <Compile Include="BuilderBase.cs" />
+    <Compile Include="BuildSteps\AssetBuildStep.cs" />
+    <Compile Include="BuildSteps\RazorBuildStep.cs" />
+    <Compile Include="ConsoleLogger.cs" />
     <Compile Include="FileSystem\CountingFileSystem.cs" />
     <Compile Include="FileSystem\DefaultEncoding.cs" />
     <Compile Include="FileSystem\FileSystemStats.cs" />
@@ -61,8 +64,11 @@
     <Compile Include="FileSystem\WindowsFileSystem.cs" />
     <Compile Include="IBuilder.cs" />
     <Compile Include="IBuildStep.cs" />
+    <Compile Include="ILogger.cs" />
     <Compile Include="LithogenTask.cs" />
+    <Compile Include="LoggerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="TaskFactory.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,9 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Plugins\README.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

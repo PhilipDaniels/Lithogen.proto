@@ -5,7 +5,7 @@ namespace Lithogen.Core
 {
     public interface IBuilder
     {
-        IFileSystem FileSystem { get; }
+        ICountingFileSystem FileSystem { get; }
         IList<IBuildStep> Steps { get; }
         bool Build();
     }

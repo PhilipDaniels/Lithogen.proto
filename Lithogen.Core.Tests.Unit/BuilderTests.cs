@@ -7,31 +7,32 @@ namespace Lithogen.Core.Tests.Unit
 {
     public class BuilderTests
     {
-        // TODO: Fix this
-        //[SetUp]
-        //public void Setup()
-        //{
-        //    TheMockFS = Substitute.For<ICountingFileSystem>();
-        //    TheMockBuildContext = Substitute.For<IBuildContext>();
-        //}
-        //public ICountingFileSystem TheMockFS;
-        //public IBuildContext TheMockBuildContext;
+        [SetUp]
+        public void Setup()
+        {
+            TheMockFS = Substitute.For<ICountingFileSystem>();
+            TheMockLogger = Substitute.For<ILogger>();
+            TheSettings = new Settings();
+        }
+        public ICountingFileSystem TheMockFS;
+        public ILogger TheMockLogger;
+        public Settings TheSettings;
 
-        //[Test]
-        //public void Ctor_ArgumentsAreNull_ThrowsArgumentNullException()
-        //{
-        //    Assert.Throws<ArgumentNullException>(() => new Builder(null, TheMockFS));
-        //    Assert.Throws<ArgumentNullException>(() => new Builder(TheMockBuildContext, null));
-        //}
+        [Test]
+        public void Ctor_ArgumentsAreNull_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => new Builder(null, TheMockLogger, TheSettings));
+            Assert.Throws<ArgumentNullException>(() => new Builder(TheMockFS, null, TheSettings));
+            Assert.Throws<ArgumentNullException>(() => new Builder(TheMockFS, TheMockLogger, null));
+        }
 
-        //[Test]
-        //public void Ctor_WhenCompleted_CreatesEmptyStepsCollectionAndSetsContextAndFileSystem()
-        //{
-        //    var builder = new Builder(TheMockBuildContext, TheMockFS);
-        //    Assert.NotNull(builder.Steps);
-        //    Assert.IsEmpty(builder.Steps);
-        //    Assert.AreSame(TheMockBuildContext, builder.BuildContext);
-        //    Assert.AreSame(TheMockFS, builder.FileSystem);
-        //}
+        [Test]
+        public void Ctor_WhenCompleted_CreatesStepsCollectionAndSetsContextAndFileSystem()
+        {
+            var builder = new Builder(TheMockFS, TheMockLogger, TheSettings);
+            Assert.NotNull(builder.Steps);
+            Assert.AreSame(TheMockFS, builder.FileSystem);
+            Assert.AreSame(TheMockLogger, builder.Logger);
+        }
     }
 }
