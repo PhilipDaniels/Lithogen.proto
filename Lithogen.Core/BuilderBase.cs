@@ -1,13 +1,8 @@
 ﻿using Lithogen.Core.BuildSteps;
 using Lithogen.Core.FileSystem;
-using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lithogen.Core
 {
@@ -26,9 +21,11 @@ namespace Lithogen.Core
             Steps = new List<IBuildStep>();
         }
 
+        public abstract void InitialiseBuildSteps();
+
         public virtual bool Build()
         {
-            Logger.Prefix = "Builder.Build() ";
+            Logger.PushPrefix("Builder.Build() ");
             Logger.Msg("Starting.");
 
             // Process css and js assets
@@ -57,7 +54,7 @@ namespace Lithogen.Core
 
             WriteFileSystemReport(FileSystem, Logger);
             Logger.Msg("Completed.");
-
+            Logger.PopPrefix();
             return true;
         }
 
@@ -67,27 +64,34 @@ namespace Lithogen.Core
             logger.ThrowIfNull("logger");
 
             logger.Msg("File I/O Report");
-            logger.Msg("===========================================================");
-            logger.Msg("Extension  FilesRead  FilesWritten  BytesRead  BytesWritten");
-            logger.Msg("---------  ---------  ------------  ---------  ------------");
+            logger.Msg("====================================================================");
+            logger.Msg("   Extension     FilesRead  FilesWritten     BytesRead  BytesWritten");
+            logger.Msg("------------  ------------  ------------  ------------  ------------");
             foreach (var stat in fileSystem.StatsByExtension.OrderBy(kvp => kvp.Key))
             {
-                logger.Msg(stat.Key.PadLeft(9) + GetStatsReportLine(stat.Value));
+                logger.Msg(PadStringToLength(stat.Key, 12) + "  " + GetStatsReportLine(stat.Value));
             }
-            logger.Msg("---------  ---------  ------------  ---------  ------------");
-            logger.Msg("  Totals:  " + GetStatsReportLine(fileSystem.TotalStats));
-            logger.Msg("===========================================================");
+            logger.Msg("------------  ------------  ------------  ------------  ------------");
+            logger.Msg("     Totals:  " + GetStatsReportLine(fileSystem.TotalStats));
+            logger.Msg("====================================================================");
         }
 
         public static string GetStatsReportLine(FileSystemStats stats)
         {
-            return stats.FilesRead.ToString().PadLeft(9) +
-                   "  " +
-                   stats.FilesWritten.ToString().PadLeft(12) +
-                   "  " +
-                   stats.BytesRead.ToString().PadLeft(9) +
-                   "  " +
-                   stats.BytesWritten.ToString().PadLeft(12);
+            return PadIntToLength(stats.FilesRead, 12) + "  " +
+                   PadIntToLength(stats.FilesWritten, 12) + "  " +
+                   PadIntToLength(stats.BytesRead, 12) + "  " +
+                   PadIntToLength(stats.BytesWritten, 12);
+        }
+
+        public static string PadIntToLength(int n, int length)
+        {
+            return n.ToString("n0").PadLeft(length).Substring(0, length);
+        }
+
+        public static string PadStringToLength(string s, int length)
+        {
+            return s.PadLeft(length).Substring(0, length);
         }
     }
 }

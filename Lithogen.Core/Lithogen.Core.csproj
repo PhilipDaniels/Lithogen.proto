@@ -52,8 +52,11 @@
     <Compile Include="Builder.cs" />
     <Compile Include="BuilderBase.cs" />
     <Compile Include="BuildSteps\AssetBuildStep.cs" />
+    <Compile Include="BuildSteps\BuildStepBase.cs" />
+    <Compile Include="BuildSteps\CopyImagesBuildStep.cs" />
     <Compile Include="BuildSteps\RazorBuildStep.cs" />
     <Compile Include="ConsoleLogger.cs" />
+    <Compile Include="FileFilter.cs" />
     <Compile Include="FileSystem\CountingFileSystem.cs" />
     <Compile Include="FileSystem\DefaultEncoding.cs" />
     <Compile Include="FileSystem\FileSystemStats.cs" />
@@ -63,10 +66,12 @@
     <Compile Include="FileSystem\MemoryFileSystem.cs" />
     <Compile Include="FileSystem\WindowsFileSystem.cs" />
     <Compile Include="IBuilder.cs" />
-    <Compile Include="IBuildStep.cs" />
+    <Compile Include="BuildSteps\IBuildStep.cs" />
+    <Compile Include="IFileFilter.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="LithogenTask.cs" />
     <Compile Include="LoggerBase.cs" />
+    <Compile Include="PathUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TaskFactory.cs" />

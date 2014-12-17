@@ -31,8 +31,8 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             get
             {
                 yield return new TestCaseData(null).Throws(typeof(ArgumentNullException));
-                yield return new TestCaseData("").Throws(typeof(ArgumentOutOfRangeException));
-                yield return new TestCaseData(" ").Throws(typeof(ArgumentOutOfRangeException));
+                yield return new TestCaseData("").Throws(typeof(ArgumentException));
+                yield return new TestCaseData(" ").Throws(typeof(ArgumentException));
             }
         }
 
@@ -41,8 +41,8 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
             get
             {
                 yield return new TestCaseData(null, TestData.EmptyByteArray).Throws(typeof(ArgumentNullException));
-                yield return new TestCaseData("", TestData.EmptyByteArray).Throws(typeof(ArgumentOutOfRangeException));
-                yield return new TestCaseData(" ", TestData.EmptyByteArray).Throws(typeof(ArgumentOutOfRangeException));
+                yield return new TestCaseData("", TestData.EmptyByteArray).Throws(typeof(ArgumentException));
+                yield return new TestCaseData(" ", TestData.EmptyByteArray).Throws(typeof(ArgumentException));
             }
         }
 
@@ -220,8 +220,8 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
 
         #region EnumerateFiles
         [TestCase(null, ExpectedException = typeof(ArgumentNullException))]
-        [TestCase("", ExpectedException = typeof(ArgumentOutOfRangeException))]
-        [TestCase(" ", ExpectedException = typeof(ArgumentOutOfRangeException))]
+        [TestCase("", ExpectedException = typeof(ArgumentException))]
+        [TestCase(" ", ExpectedException = typeof(ArgumentException))]
         [TestCase(TestData.DirectoryThatDoesNotExist, ExpectedException = typeof(DirectoryNotFoundException))]
         public virtual void EnumerateFiles_WhenDirectoryNameIsInvalid_Throws(string directory)
         {
@@ -229,8 +229,8 @@ namespace Lithogen.Core.Tests.Unit.FileSystem
         }
 
         [TestCase(@"C:\", null, ExpectedException = typeof(ArgumentNullException))]
-        [TestCase(@"C:\", "", ExpectedException = typeof(ArgumentOutOfRangeException))]
-        [TestCase(@"C:\", " ", ExpectedException = typeof(ArgumentOutOfRangeException))]
+        [TestCase(@"C:\", "", ExpectedException = typeof(ArgumentException))]
+        [TestCase(@"C:\", " ", ExpectedException = typeof(ArgumentException))]
         public virtual void EnumerateFiles_WhenPatternIsInvalid_Throws(string directory, string pattern)
         {
             TheFS.EnumerateFiles(directory, pattern);

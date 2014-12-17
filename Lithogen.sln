@@ -17,6 +17,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lithogen.Core.Tests.Integration", "Lithogen.Core.Tests.Integration\Lithogen.Core.Tests.Integration.csproj", "{E686A4BB-1FB6-4D39-BBBD-38FDC30D993A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lithogen.Boilerplate", "Lithogen.Boilerplate\Lithogen.Boilerplate.csproj", "{FAB35131-917C-4251-AB6C-9D3DDCCBC24F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3F58BF85-6A83-41DD-8665-C9DA0265DD7A} = {3F58BF85-6A83-41DD-8665-C9DA0265DD7A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lithogen", "Lithogen\Lithogen.csproj", "{3F58BF85-6A83-41DD-8665-C9DA0265DD7A}"
 EndProject

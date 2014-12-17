@@ -8,21 +8,27 @@ namespace Lithogen.Core
 {
     public abstract class LoggerBase : ILogger
     {
-        public string Prefix { get; set; }
+        public string Prefix { get { return Prefixes.Peek(); } }
         DateTime StartTime;
         DateTime LastTime;
 
         public LoggerBase()
-            : this(null)
-        {
-        }
-
-        public LoggerBase(string prefix)
         {
             StartTime = DateTime.Now;
             LastTime = StartTime;
-            Prefix = prefix;
+            Prefixes = new Stack<string>();
         }
+
+        public void PushPrefix(string prefix)
+        {
+            Prefixes.Push(prefix);
+        }
+
+        public void PopPrefix()
+        {
+            Prefixes.Pop();
+        }
+        Stack<string> Prefixes;
 
         /// <summary>
         /// Logs a standard message, including time formatting.

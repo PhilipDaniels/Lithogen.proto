@@ -56,33 +56,39 @@ namespace Lithogen.TaskShim
 
         /// <summary>
         /// The directory that contains CSS, Less, SASS etc.
-        /// Optional, a default will be  assumed if this is not set.
+        /// Optional, a default will be assumed if this is not set.
         /// </summary>
         public string CssDirectory { get; set; }
 
         /// <summary>
         /// The directory that contains images.
-        /// Optional, a default will be  assumed if this is not set.
+        /// Optional, a default will be assumed if this is not set.
         /// </summary>
         public string ImagesDirectory { get; set; }
 
         /// <summary>
         /// The directory that contains JavaScript.
-        /// Optional, a default will be  assumed if this is not set.
+        /// Optional, a default will be assumed if this is not set.
         /// </summary>
         public string ScriptsDirectory { get; set; }
 
         /// <summary>
         /// The directory that contains the Models.
-        /// Optional, a default will be  assumed if this is not set.
+        /// Optional, a default will be assumed if this is not set.
         /// </summary>
         public string ModelsDirectory { get; set; }
 
         /// <summary>
         /// The directory that contains the Views.
-        /// Optional, a default will be  assumed if this is not set.
+        /// Optional, a default will be assumed if this is not set.
         /// </summary>
         public string ViewsDirectory { get; set; }
+
+        /// <summary>
+        /// The output directory.
+        /// Optional, a default directory will be assumed if this is not set.
+        /// </summary>
+        public string OutputDirectory { get; set; } 
         #endregion
 
 
@@ -141,6 +147,8 @@ namespace Lithogen.TaskShim
                 sb.AppendFormat(" /mo=\"{0}\"", ModelsDirectory);
             if (!String.IsNullOrWhiteSpace(ViewsDirectory))
                 sb.AppendFormat(" /vw=\"{0}\"", ViewsDirectory);
+            if (!String.IsNullOrEmpty(OutputDirectory))
+                sb.AppendFormat(" /od=\"{0}\"", OutputDirectory);
 
             return sb.ToString();
         }

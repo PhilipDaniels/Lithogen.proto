@@ -57,6 +57,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="humans.txt" />
+    <Content Include="img\apple-touch-icon-precomposed.png" />
+    <Content Include="img\subdir1\apple-touch-icon-precomposed.png" />
     <Content Include="js\html5plugins.js" />
     <Content Include="js\modernizr-2.8.0.min.js" />
     <Content Include="robots.txt" />
@@ -71,7 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="img\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -117,7 +118,6 @@
   <Import Project="$(SolutionDir)Lithogen.TaskShim\Lithogen.TaskShim.targets" />
   <Target Name="BeforeBuild">
   </Target>
-
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
        <Import Project="$(SolutionDir)Lithogen.TaskShim\Lithogen.TaskShim.targets" />

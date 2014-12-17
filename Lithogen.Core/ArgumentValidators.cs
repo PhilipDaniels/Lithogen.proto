@@ -74,7 +74,7 @@ namespace Lithogen.Core
             if (parameter == null)
                 throw new ArgumentNullException(parameterName, message);
             if (parameter.Length == 0)
-                throw new ArgumentOutOfRangeException(parameterName, message);
+                throw new ArgumentException(parameterName, message);
 
             return parameter;
         }
@@ -104,7 +104,7 @@ namespace Lithogen.Core
             if (parameter == null)
                 throw new ArgumentNullException(parameterName, message);
             if (parameter.Trim().Length == 0)
-                throw new ArgumentOutOfRangeException(parameterName, message);
+                throw new ArgumentException(parameterName, message);
 
             return parameter;
         }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Lithogen
@@ -18,7 +19,8 @@ namespace Lithogen
         {
             try
             {
-                Logger = new ConsoleLogger() { Prefix = "Main() " };
+                Logger = new ConsoleLogger();
+                Logger.PushPrefix("Main() ");
                 Logger.Msg("Starting. Parsing settings.");
                 var argsDict = ProcessArgs(args);
                 Settings = LoadSettings(argsDict);
@@ -29,6 +31,7 @@ namespace Lithogen
                 var container = ConfigureIoC();
                 var builder = container.GetInstance<IBuilder>();
                 Logger.Msg("IBuilder of type {0} created.", builder.GetType());
+                builder.InitialiseBuildSteps(); 
                 builder.Build();
                 Logger.Msg("Done.");
             }
@@ -44,16 +47,52 @@ namespace Lithogen
             container.Options.AllowOverridingRegistrations = true;
             Logger.Msg("IoC container created.");
 
-            container.Register<ILogger, ConsoleLogger>();
+            container.RegisterSingle<ILogger>(Logger);
             container.Register<IBuilder, Builder>();
             container.Register<IFileSystem, WindowsFileSystem>();
             container.Register<ICountingFileSystem, CountingFileSystem>();
+            container.Register<IFileFilter, FileFilter>();
             container.RegisterSingle<Settings>(Settings);
             Logger.Msg("Default Lithogen types registered.");
+
+            string[] plugins = Directory.GetFiles(Settings.PluginsDirectory, "*.dll", SearchOption.TopDirectoryOnly);
+            if (plugins.Length > 0)
+            {
+                foreach (string plugin in plugins)
+                {
+                    Logger.Msg("Registering plugins from " + plugin);
+                    var pluginTypes = from type in Assembly.LoadFile(plugin).GetExportedTypes()
+                                      where !type.IsAbstract && !type.IsGenericTypeDefinition
+                                      select type;
+                    foreach (Type pluginType in pluginTypes)
+                    {
+                        foreach (Type t in OverridableTypes)
+                        {
+                            if (t.IsAssignableFrom(pluginType))
+                            {
+                                container.Register(t, pluginType);
+                                Logger.Msg("Registered type {0} against interface {1}.", pluginType.FullName, t.Name);
+                            }
+                        }
+                    }
+                }
+                Logger.Msg("All plugin types registered.");
+            }
 
             container.Verify();
             Logger.Msg("IoC container verified.");
             return container;
+        }
+
+        static IEnumerable<Type> OverridableTypes
+        {
+            get
+            {
+                yield return typeof(IBuilder);
+                yield return typeof(ILogger);
+                yield return typeof(IFileSystem);
+                yield return typeof(ICountingFileSystem);
+            }
         }
 
         /// <summary>
@@ -104,6 +143,8 @@ namespace Lithogen
                     settings.ModelsDirectory = kvp.Value;
                 else if (k == "vw")
                     settings.ViewsDirectory = kvp.Value;
+                else if (k == "od")
+                    settings.OutputDirectory = kvp.Value;
             }
 
             if (settings.PluginsDirectory == null)
@@ -133,6 +174,7 @@ namespace Lithogen
             settings.ScriptsDirectory = GetNullOrValue(config, "ScriptsDirectory");
             settings.ModelsDirectory = GetNullOrValue(config, "ModelsDirectory");
             settings.ViewsDirectory = GetNullOrValue(config, "ViewsDirectory");
+            settings.OutputDirectory = GetNullOrValue(config, "OutputDirectory");
             return settings;
         }
 
@@ -175,7 +217,12 @@ namespace Lithogen
                 }
                 else
                 {
-                    result[key] = parts[1];
+                    string value = parts[1];
+                    // Have to be careful, if we get an argument of the form "C:\somewhere\" the last double
+                    // quote gets included in the argument.
+                    if (value.EndsWith("\"", StringComparison.OrdinalIgnoreCase))
+                        value = value.Substring(0, value.Length - 1);
+                    result[key] = value;
                 }
             }
 
@@ -201,6 +248,7 @@ namespace Lithogen
             Logger.Msg("  ScriptsDirectory = {0}", config.ScriptsDirectory);
             Logger.Msg("  ModelsDirectory = {0}", config.ModelsDirectory);
             Logger.Msg("  ViewsDirectory = {0}", config.ViewsDirectory);
+            Logger.Msg("  OutputDirectory = {0}", config.OutputDirectory);
         }
     }
 }

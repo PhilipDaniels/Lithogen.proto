@@ -1,41 +1,38 @@
 ﻿using Lithogen.Core.FileSystem;
-using System.Threading;
+using Xipton.Razor;
 
 namespace Lithogen.Core.BuildSteps
 {
-    public class RazorBuildStep : IBuildStep
+    public class RazorBuildStep : BuildStepBase
     {
-        public IFileSystem FileSystem { get; private set; }
-        public Settings Settings { get; private set; }
-        public string Name { get; set; }
+        public IRazorMachine RazorMachine { get; set; }
 
-        public RazorBuildStep(IFileSystem fileSystem, Settings settings)
+        public RazorBuildStep(IFileSystem fileSystem, Settings settings, ILogger logger)
+            : base(fileSystem, settings, logger)
         {
-            FileSystem = fileSystem.ThrowIfNull("fileSystem");
-            Settings = settings.ThrowIfNull("settings");
             Name = "RazorBuildStep";
+            RazorMachine = CreateRazorMachineWithoutContentProviders();
         }
 
-        public bool Execute()
+        public override bool Execute()
         {
-            Thread.Sleep(500);
+            Logger.PushPrefix("RazorBuildStep.Execute() ");
+            ITemplate template = RazorMachine.ExecuteContent("Razor says: Hello @Model.FirstName @Model.LastName", new { FirstName = "John", LastName = "Smith" });
+            Logger.Msg(template.Result);
+            Logger.PopPrefix();
             return true;
         }
 
-        //void ProveRazorMachineWorks(Logger logger)
-        //{
-        //    // Creating a machine is quick (about 0.1 seconds), rendering a simple
-        //    // template is comparatively slow (about 0.6 seconds).
-        //    var rm = CreateRazorMachineWithoutContentProviders();
-        //    ITemplate template = rm.ExecuteContent("Razor says: Hello @Model.FirstName @Model.LastName", new { FirstName = "John", LastName = "Smith" });
-        //    logger.Msg(template.Result);
-        //}
-
-        //RazorMachine CreateRazorMachineWithoutContentProviders(bool includeGeneratedSourceCode = false, string rootOperatorPath = null, bool htmlEncode = true)
-        //{
-        //    var rm = new RazorMachine(includeGeneratedSourceCode: includeGeneratedSourceCode, htmlEncode: htmlEncode, rootOperatorPath: rootOperatorPath);
-        //    rm.Context.TemplateFactory.ContentManager.ClearAllContentProviders();
-        //    return rm;
-        //}
+        public static RazorMachine CreateRazorMachineWithoutContentProviders
+            (
+            bool includeGeneratedSourceCode = false,
+            string rootOperatorPath = null,
+            bool htmlEncode = true
+            )
+        {
+            var rm = new RazorMachine(includeGeneratedSourceCode: includeGeneratedSourceCode, htmlEncode: htmlEncode, rootOperatorPath: rootOperatorPath);
+            rm.Context.TemplateFactory.ContentManager.ClearAllContentProviders();
+            return rm;
+        }
     }
 }

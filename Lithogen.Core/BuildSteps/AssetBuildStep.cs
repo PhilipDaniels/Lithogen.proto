@@ -1,25 +1,18 @@
 ﻿using Lithogen.Core.FileSystem;
-using System.Threading;
 
 namespace Lithogen.Core.BuildSteps
 {
-    public class AssetBuildStep : IBuildStep
+    public class AssetBuildStep : BuildStepBase
     {
-        public IFileSystem FileSystem { get; private set; }
-        public Settings Settings { get; private set; }
-
-        public string Name { get; set; }
-
-        public AssetBuildStep(IFileSystem fileSystem, Settings settings)
+        public AssetBuildStep(IFileSystem fileSystem, Settings settings, ILogger logger)
+            : base(fileSystem, settings, logger)
         {
-            FileSystem = fileSystem.ThrowIfNull("fileSystem");
-            Settings = settings.ThrowIfNull("settings");
             Name = "AssetBuildStep";
         }
 
-        public bool Execute()
+        public override bool Execute()
         {
-            Thread.Sleep(500);
+            //Thread.Sleep(500);
             return true;
         }
     }

@@ -12,6 +12,7 @@ namespace Lithogen.Core.Tests.Unit
         public readonly static string T_ScriptsDirectory = @"C:\temp\js";
         public readonly static string T_ViewsDirectory = @"C:\temp\views";
         public readonly static string T_ModelsDirectory = @"C:\temp\models";
+        public readonly static string T_OutputDirectory = @"C:\temp\bin\";
 
         [SetUp]
         public virtual void Setup()
@@ -304,6 +305,54 @@ namespace Lithogen.Core.Tests.Unit
             TheSettings.ProjectFile = T_ProjectDirectory;
             TheSettings.ProjectDirectory = @"C:\somewhere\else\";
             Assert.AreEqual(@"C:\somewhere\else\views", TheSettings.ViewsDirectory);
+        }
+        #endregion
+
+        #region OutputDirectory
+        [Test]
+        [ExpectedException(typeof(NullReferenceException))]
+        public virtual void OutputDirectory_WhenProjectFileIsNull_ThrowsNullReferenceException()
+        {
+            TheSettings.ProjectFile = null;
+            string outputDirectory = TheSettings.OutputDirectory;
+        }
+
+        [Test]
+        public virtual void OutputDirectory_WhenProjectFileIsSetAndViewsDirectoryIsNull_MatchesVisualStudioDefaultsAndIsLowerCase()
+        {
+            TheSettings.ProjectFile = T_ProjectFile;
+            Assert.AreEqual(T_OutputDirectory, TheSettings.OutputDirectory);
+        }
+
+        [Test]
+        public virtual void OutputDirectory_WhenExplicitlySet_IsReturnedUnchanged()
+        {
+            TheSettings.OutputDirectory = T_OutputDirectory;
+            Assert.AreEqual(T_OutputDirectory, TheSettings.OutputDirectory);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public virtual void OutputDirectory_WhenSettingToWhitespace_ThrowsArgumentException()
+        {
+            TheSettings.OutputDirectory = "";
+        }
+
+        [Test]
+        public virtual void OutputDirectory_WhenReSettingToNull_RevertsToDefaultBehaviour()
+        {
+            TheSettings.ProjectFile = T_ProjectFile;
+            TheSettings.OutputDirectory = "anywhere";
+            TheSettings.OutputDirectory = null;
+            Assert.AreEqual(T_OutputDirectory, TheSettings.OutputDirectory);
+        }
+
+        [Test]
+        public virtual void OutputDirectory_WhenProjectDirectoryIsExplicitlySet_DerivesFromProjectDirectoryNotProjectFile()
+        {
+            TheSettings.ProjectFile = T_ProjectDirectory;
+            TheSettings.ProjectDirectory = @"C:\somewhere\else\";
+            Assert.AreEqual(@"C:\somewhere\else\bin\", TheSettings.OutputDirectory);
         }
         #endregion
     }

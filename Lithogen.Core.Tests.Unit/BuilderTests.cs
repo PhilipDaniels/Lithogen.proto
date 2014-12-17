@@ -19,7 +19,7 @@ namespace Lithogen.Core.Tests.Unit
         public Settings TheSettings;
 
         [Test]
-        public void Ctor_ArgumentsAreNull_ThrowsArgumentNullException()
+        public void Ctor_WhenArgumentsAreNull_ThrowsArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(() => new Builder(null, TheMockLogger, TheSettings));
             Assert.Throws<ArgumentNullException>(() => new Builder(TheMockFS, null, TheSettings));
@@ -33,6 +33,7 @@ namespace Lithogen.Core.Tests.Unit
             Assert.NotNull(builder.Steps);
             Assert.AreSame(TheMockFS, builder.FileSystem);
             Assert.AreSame(TheMockLogger, builder.Logger);
+            Assert.AreSame(TheSettings, builder.Settings);
         }
     }
 }

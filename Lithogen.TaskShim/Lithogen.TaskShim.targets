@@ -6,7 +6,9 @@
   <Target Name="RunLithogen">
     <LithogenShim LithogenExeFile="$(SolutionDir)Lithogen\bin\$(Configuration)\Lithogen.exe" MessageImportance="High"
                   ConfigurationFile="" SolutionFile="$(SolutionPath)" ProjectFile="$(ProjectPath)" Configuration="$(Configuration)"
-                  CssDirectory="" ImagesDirectory="" ScriptsDirectory="" ModelsDirectory="" ViewsDirectory="" />
+                  CssDirectory="" ImagesDirectory="" ScriptsDirectory="" ModelsDirectory="" ViewsDirectory=""
+                  OutputDirectory="$(MSBuildProjectDirectory)\$(OutputPath)"
+                  />
   </Target>
 
   <PropertyGroup>

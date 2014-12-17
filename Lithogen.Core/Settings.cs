@@ -27,6 +27,7 @@ namespace Lithogen.Core
             _ScriptsDirectory = new ProjectDirectoryDerivedSubfolder(this, "js", "ScriptsDirectory");
             _ModelsDirectory = new ProjectDirectoryDerivedSubfolder(this, "models", "ModelsDirectory");
             _ViewsDirectory = new ProjectDirectoryDerivedSubfolder(this, "views", "ViewsDirectory");
+            _OutputDirectory = new ProjectDirectoryDerivedSubfolder(this, "bin\\" + Configuration, "OutputDirectory");
         }
 
         public string ProjectDirectory
@@ -90,6 +91,14 @@ namespace Lithogen.Core
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         ProjectDirectoryDerivedSubfolder _ViewsDirectory;
 
+        public string OutputDirectory
+        {
+            get { return _OutputDirectory.Value; }
+            set { _OutputDirectory.Value = value; }
+        }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        ProjectDirectoryDerivedSubfolder _OutputDirectory;
+
         class ProjectDirectoryDerivedSubfolder
         {
             readonly Settings OwnerContext;
@@ -145,6 +154,9 @@ namespace Lithogen.Core
             ProjectFile = ProjectFile.Trim();
             if (!File.Exists(ProjectFile))
                 throw new FileNotFoundException("The ProjectFile '" + ProjectFile + "' does not exist.");
+
+            if (String.IsNullOrWhiteSpace(OutputDirectory))
+                throw new ArgumentException("The OutputDirectory is not set.");
 
             if (Configuration != null)
                 Configuration = Configuration.Trim();
